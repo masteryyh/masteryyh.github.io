@@ -1,0 +1,70 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+    color-scheme: dark;
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+html,
+body {
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    background: #020617; /* slate-950 */
+    color: #e2e8f0; /* slate-200 */
+}
+
+/* Subtle animated background, no indigo hues */
+.bg-grid {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background-image:
+        radial-gradient(circle at 20% 10%, rgba(16, 185, 129, 0.20), transparent 45%),
+        radial-gradient(circle at 80% 35%, rgba(34, 211, 238, 0.14), transparent 55%),
+        radial-gradient(circle at 45% 85%, rgba(251, 191, 36, 0.12), transparent 55%),
+        linear-gradient(to right, rgba(148, 163, 184, 0.08) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(148, 163, 184, 0.08) 1px, transparent 1px);
+    background-size: auto, auto, auto, 48px 48px, 48px 48px;
+    background-position: 0 0, 0 0, 0 0, 0 0, 0 0;
+    filter: saturate(110%);
+    opacity: 0.9;
+    animation: bgFloat 18s ease-in-out infinite;
+}
+
+@keyframes bgFloat {
+    0% {
+        transform: translate3d(0, 0, 0);
+    }
+    50% {
+        transform: translate3d(0, -10px, 0);
+    }
+    100% {
+        transform: translate3d(0, 0, 0);
+    }
+}
+
+.text-balance {
+    text-wrap: balance;
+}
+
+.terminal-cursor {
+    display: inline-block;
+    width: 0.65ch;
+    background: rgba(34, 211, 238, 0.9);
+    margin-left: 0.12ch;
+    animation: blink 1s steps(1, end) infinite;
+}
+
+@keyframes blink {
+    50% {
+        opacity: 0;
+    }
+}
