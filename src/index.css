@@ -76,18 +76,52 @@ html[data-theme='dark'] .bg-grid {
 
 .terminal-cursor {
     display: inline-block;
-    width: 0.65ch;
-    background: rgba(14, 116, 144, 0.65);
-    margin-left: 0.12ch;
+    width: 1ch;
+    margin-left: 0.05ch;
+    color: rgba(14, 116, 144, 0.95);
+    line-height: 1;
     animation: blink 1s steps(1, end) infinite;
 }
 
 html[data-theme='dark'] .terminal-cursor {
-    background: rgba(34, 211, 238, 0.9);
+    color: rgba(34, 211, 238, 0.95);
 }
 
 @keyframes blink {
     50% {
         opacity: 0;
+    }
+}
+
+@keyframes pathFadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes pathFadeOut {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}
+
+.path-fade-in {
+    animation: pathFadeIn 160ms ease-out both;
+}
+
+.path-fade-out {
+    animation: pathFadeOut 160ms ease-out both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .path-fade-in,
+    .path-fade-out {
+        animation: none;
     }
 }
