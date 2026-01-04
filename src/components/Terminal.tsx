@@ -26,7 +26,7 @@ function sleep(ms: number) {
 export function Terminal({
     title = 'portfolio.sh',
     name,
-    line2 = 'Backend / Full-stack / DevOps',
+    line2 = 'Backend / Fullstack / DevOps',
     contact,
 }: TerminalProps) {
     const script = useMemo<TerminalLine[]>(

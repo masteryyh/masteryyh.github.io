@@ -51,28 +51,29 @@ export const resources = {
             about: {
                 title: '关于我',
                 items: [
-                    '后端 / 全栈工程师',
-                    'DevOps 工程师：CI/CD、容器与基础设施自动化',
-                    'Homelab 爱好者，喜欢折腾自托管服务与家庭网络',
-                    '曾就职于 SUSE',
+                    '后端 / 全栈工程师：Go、Java、Node.js、React...',
+                    'DevOps 工程师：CI/CD、Kubernetes、IaC、自动化和可观测性',
+                    'Homelab 爱好者，正在家自建数据中心',
+                    '一只孟加拉豹猫🐱的朋友和家人'
                 ],
             },
             cert: {
                 title: '证书',
                 valid: '有效',
+                linuxFoundation: 'Linux 基金会',
                 viewOnCredly: '在 Credly 查看',
             },
             stack: {
                 title: '技术栈',
                 labels: {
-                    languages: '语言',
-                    backend: '后端',
+                    languagesFrameworks: '语言 / 框架',
+                    dbMiddlewares: '数据库 / 中间件',
                     cloud: '云原生 / 运维',
-                    frontend: '前端',
+                    frontendFullstack: '前端 / 全栈',
                 },
             },
             footer: {
-                builtWith: '使用 React 构建',
+                builtWith: '使用 Vite + React 构建 ❤️',
             },
             terminal: {
                 line2: '后端 / 全栈 / DevOps',
@@ -92,11 +93,11 @@ export const resources = {
             },
             roles: {
                 backend: 'Backend',
-                fullstack: 'Full-stack',
+                fullstack: 'Fullstack',
                 devOps: 'DevOps',
             },
             header: {
-                tagline: 'Backend / Full-stack / DevOps engineer',
+                tagline: 'Backend / Fullstack / DevOps engineer',
             },
             actions: {
                 open: 'Open',
@@ -113,31 +114,32 @@ export const resources = {
             about: {
                 title: 'About',
                 items: [
-                    'Backend / full-stack engineer',
-                    'DevOps engineer: CI/CD, containers, and infrastructure automation.',
-                    'Homelab enthusiast who enjoys self-hosting and home networking.',
-                    'Former employee of SUSE',
+                    'Backend / Fullstack engineer: Go, Java, Node.js, React...',
+                    'DevOps engineer: CI/CD, Kubernetes, IaC, automation, and observability.',
+                    'Homelab enthusiast who is building a home datacenter.',
+                    'A friend and family member of a Bengal cat 🐱',
                 ],
             },
             cert: {
                 title: 'Certifications',
                 valid: 'Valid',
+                linuxFoundation: 'The Linux Foundation',
                 viewOnCredly: 'View on Credly',
             },
             stack: {
                 title: 'Tech stack',
                 labels: {
-                    languages: 'Languages',
-                    backend: 'Backend',
+                    languagesFrameworks: 'Languages / Frameworks',
+                    dbMiddlewares: 'Databases / Middlewares',
                     cloud: 'Cloud / Ops',
-                    frontend: 'Frontend',
+                    frontendFullstack: 'Frontend / Fullstack',
                 },
             },
             footer: {
-                builtWith: 'Built with React',
+                builtWith: 'Built using Vite + React with ❤️',
             },
             terminal: {
-                line2: 'Backend / Full-stack / DevOps',
+                line2: 'Backend / Fullstack / DevOps',
             },
             colorMode: {
                 ariaLabel: 'Theme: {{mode}}. Click to switch.',

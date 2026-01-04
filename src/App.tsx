@@ -24,29 +24,29 @@ const PROFILE = {
 const CERTS = [
     {
         name: 'CKA (Certified Kubernetes Administrator)',
-        issuer: 'The Linux Foundation',
+        issuer: 'cert.linuxFoundation',
         year: '2024',
-        href: PROFILE.contact.credly,
+        href: 'https://www.credly.com/badges/0289e078-1df9-40d2-8265-927291ec01c7',
     },
     {
         name: 'CKAD (Certified Kubernetes Application Developer)',
-        issuer: 'The Linux Foundation',
+        issuer: 'cert.linuxFoundation',
         year: '2024',
-        href: PROFILE.contact.credly,
+        href: 'https://www.credly.com/badges/3b4a475d-5909-48da-9bbf-2f4c62dac25c',
     },
     {
         name: 'CKS (Certified Kubernetes Security Specialist)',
-        issuer: 'The Linux Foundation',
+        issuer: 'cert.linuxFoundation',
         year: '2024',
-        href: PROFILE.contact.credly,
+        href: 'https://www.credly.com/badges/771f5a45-c6d4-4da1-a559-09e15e9a5326',
     }
 ]
 
 const STACK = {
-    Languages: ['Go', 'Java', 'JavaScript / TypeScript', 'SQL'],
-    Backend: ['gRPC', 'RabbitMQ', 'Redis', 'PostgreSQL', 'MySQL'],
-    Cloud: ['Docker', 'Kubernetes', 'CI/CD', 'Linux', 'Prometheus', 'Grafana'],
-    Frontend: ['React', 'Vite', 'Tailwind CSS'],
+    'stack.labels.languagesFrameworks': ['Go', 'Gin', 'GORM', 'Java', 'Spring Boot', 'JavaScript / TypeScript', 'SQL'],
+    'stack.labels.dbMiddlewares': ['Redis', 'PostgreSQL', 'MySQL', 'RabbitMQ', 'MongoDB', 'Elasticsearch'],
+    'stack.labels.cloud': ['Docker', 'Kubernetes', 'KVM', 'CI/CD', 'Linux', 'Prometheus', 'Grafana'],
+    'stack.labels.frontendFullstack': ['React', 'NextJS', 'Vite', 'Tailwind CSS'],
 }
 
 
@@ -194,15 +194,7 @@ function App() {
                                     key={group}
                                 >
                                     <div className="text-sm font-semibold text-slate-900 dark:text-slate-100">
-                                        {group === 'Languages'
-                                            ? t('stack.labels.languages')
-                                            : group === 'Backend'
-                                                ? t('stack.labels.backend')
-                                                : group === 'Cloud'
-                                                    ? t('stack.labels.cloud')
-                                                    : group === 'Frontend'
-                                                        ? t('stack.labels.frontend')
-                                                        : group}
+                                        {t(group)}
                                     </div>
                                     <div className="mt-4 flex flex-wrap gap-2">
                                         {items.map((it) => (
@@ -232,7 +224,7 @@ function App() {
                                         <div>
                                             <div className="text-sm font-semibold text-slate-900 dark:text-slate-100">{c.name}</div>
                                             <div className="mt-1 text-sm text-slate-600 dark:text-slate-400">
-                                                {c.issuer} • {c.year}
+                                                {t(c.issuer)} • {c.year}
                                             </div>
                                         </div>
                                         <Badge tone="accent">{t('cert.valid')}</Badge>
