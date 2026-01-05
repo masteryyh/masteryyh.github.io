@@ -50,12 +50,14 @@ function App() {
     const [certs, setCerts] = useState<Cert[] | null>(null);
     const [techStack, setTechStack] = useState<TechStack | null>(null);
     const [error, setError] = useState<Error | null>(null);
+    const [retryCount, setRetryCount] = useState(0);
 
     const handleRetry = () => {
         setError(null);
         setProfile(null);
         setCerts(null);
         setTechStack(null);
+        setRetryCount((prev) => prev + 1);
     };
 
     const aboutItems = t("about.items", { returnObjects: true });
@@ -97,7 +99,7 @@ function App() {
         return () => {
             abortController.abort();
         };
-    }, []);
+    }, [retryCount]);
 
     useEffect(() => {
         if (!profile) return;
@@ -163,10 +165,10 @@ function App() {
 
     if (!profile || !certs || !techStack) {
         return (
-            <div className="min-h-dvh relative">
+            <div className="min-h-dvh relative" aria-busy="true">
                 <div className="bg-grid" />
                 <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="flex flex-col items-center gap-4" aria-busy="true">
+                    <div className="flex flex-col items-center gap-4" role="status">
                         <div
                             className="h-12 w-12 animate-spin rounded-full border-2 border-slate-400 border-t-transparent dark:border-slate-500 dark:border-t-transparent"
                             aria-hidden="true"
