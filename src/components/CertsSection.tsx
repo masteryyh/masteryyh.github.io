@@ -23,14 +23,16 @@ export function CertsSection({ title, validLabel, viewLabel, certs }: CertsSecti
             <div className="grid gap-4 md:grid-cols-2">
                 {certs.map((c) => (
                     <Card key={c.name}>
-                        <div className="flex items-start justify-between gap-4">
-                            <div>
-                                <div className="text-sm font-semibold text-slate-900 dark:text-slate-100">{c.name}</div>
+                        <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
+                            <div className="min-w-0">
+                                <div className="break-words text-sm font-semibold text-slate-900 dark:text-slate-100">{c.name}</div>
                                 <div className="mt-1 text-sm text-slate-600 dark:text-slate-400">
                                     {c.issuer} • {c.year}
                                 </div>
                             </div>
-                            <Badge tone="accent">{validLabel}</Badge>
+                            <div className="shrink-0 self-start">
+                                <Badge tone="accent">{validLabel}</Badge>
+                            </div>
                         </div>
                         <div className="mt-4 text-sm">
                             <ExternalLink href={c.href}>{viewLabel}</ExternalLink>

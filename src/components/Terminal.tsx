@@ -9,7 +9,6 @@ type TerminalContact = {
     phone?: string;
     wechat?: string;
     linkedin: string;
-    credly: string;
 };
 
 type TerminalProps = {
@@ -68,7 +67,6 @@ export function Terminal({
                 ? ([{ kind: "output", text: `  "wechat": "${contact.wechat}",` }] as const)
                 : []),
             { kind: "output", text: `  "linkedin": "${contact.linkedin}",` },
-            { kind: "output", text: `  "credly": "${contact.credly}"` },
             { kind: "output", text: "}" },
             { kind: "prompt", prompt: "yyh@dev:~$", command: "echo \"Thanks for stopping by.\"" },
             { kind: "output", text: "Thanks for stopping by." },
@@ -163,7 +161,7 @@ export function Terminal({
 
     return (
         <div className="overflow-hidden rounded-2xl border border-slate-200/80 bg-slate-50/80 shadow-[0_0_0_1px_rgba(15,23,42,0.05),0_20px_50px_-38px_rgba(15,23,42,0.22)] backdrop-blur-sm dark:border-slate-800/70 dark:bg-slate-950/60 dark:shadow-[0_0_0_1px_rgba(15,23,42,0.15),0_30px_80px_-40px_rgba(0,0,0,0.8)]">
-            <div className="flex items-center gap-2 border-b border-slate-200/80 bg-slate-50/90 px-4 py-3 dark:border-slate-800/70 dark:bg-slate-950/70">
+            <div className="flex items-center gap-2 border-b border-slate-200/80 bg-slate-50/90 px-3 py-2.5 dark:border-slate-800/70 dark:bg-slate-950/70 sm:px-4 sm:py-3">
                 <div className="flex gap-2">
                     <span className="h-2.5 w-2.5 rounded-full bg-rose-400/70" />
                     <span className="h-2.5 w-2.5 rounded-full bg-amber-300/70" />
@@ -174,7 +172,7 @@ export function Terminal({
 
             <div
                 ref={scrollViewportRef}
-                className="max-h-[340px] overflow-auto px-4 py-4 font-mono text-[13px] leading-relaxed"
+                className="max-h-[280px] overflow-auto px-3 py-3 font-mono text-[12px] leading-relaxed sm:max-h-[340px] sm:px-4 sm:py-4 sm:text-[13px]"
             >
                 {rendered.map((line, idx) => (
                     <div key={idx} className="whitespace-pre-wrap text-slate-800 dark:text-slate-200">

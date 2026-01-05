@@ -18,7 +18,6 @@ const PROFILE = {
         phone: "+86 15616700368",
         github: "https://github.com/masteryyh",
         linkedin: "https://www.linkedin.com/in/masteryyh",
-        credly: "https://www.credly.com/users/masteryyh",
     },
 };
 
@@ -130,12 +129,12 @@ function App() {
                 onLangChange={(l) => i18n.changeLanguage(l)}
             />
 
-            <div className="mx-auto w-full max-w-6xl px-5 py-12">
+            <div className="mx-auto w-full max-w-6xl px-4 py-10 sm:px-5 sm:py-12">
                 <header className="flex flex-col gap-7">
                     <div className="flex flex-col gap-3">
                         <div className="flex flex-wrap items-center justify-between gap-3">
                             <div className="flex flex-wrap items-baseline gap-x-3 gap-y-2">
-                                <h1 className="text-3xl font-semibold tracking-tight text-slate-900 dark:text-slate-50">
+                                <h1 className="break-words text-2xl font-semibold tracking-tight text-slate-900 dark:text-slate-50 sm:text-3xl">
                                     {PROFILE.name}
                                 </h1>
                                 <span className="font-mono text-sm text-slate-500 dark:text-slate-400">
@@ -144,19 +143,19 @@ function App() {
                             </div>
 
                             {!scrolled ? (
-                                <div className="flex items-center gap-2">
+                                <div className="hidden items-center gap-2 sm:flex">
                                     <ThemeToggle />
                                     <LanguageToggle value={lang} onChange={(l) => i18n.changeLanguage(l)} />
                                 </div>
                             ) : null}
                         </div>
 
-                        <p className="text-balance text-sm leading-relaxed text-slate-600 dark:text-slate-300">
+                        <p className="text-balance text-sm leading-relaxed text-slate-600 dark:text-slate-300 sm:text-base">
                             {t("header.tagline")}
                         </p>
                     </div>
 
-                    <div className="grid gap-6 lg:grid-cols-[1.05fr_0.95fr]">
+                    <div className="grid gap-5 sm:gap-6 lg:grid-cols-[1.05fr_0.95fr]">
                         <Terminal
                             title="~/portfolio"
                             name={PROFILE.name}
@@ -168,7 +167,7 @@ function App() {
                     </div>
                 </header>
 
-                <main className="mt-10 grid gap-10">
+                <main className="mt-9 grid gap-8 sm:mt-10 sm:gap-10">
                     <AboutSection title={t("about.title")} items={aboutList} />
 
                     <StackSection
@@ -192,7 +191,7 @@ function App() {
                     />
                 </main>
 
-                <footer className="mt-12 border-t border-slate-200 py-8 text-sm text-slate-600 dark:border-slate-800/70 dark:text-slate-400">
+                <footer className="mt-12 border-t border-slate-200 py-6 text-xs text-slate-600 dark:border-slate-800/70 dark:text-slate-400 sm:py-8 sm:text-sm">
                     <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
                         <div>
                             <span className="text-slate-900 dark:text-slate-300">masteryyh</span> • {t("footer.builtWith")}
