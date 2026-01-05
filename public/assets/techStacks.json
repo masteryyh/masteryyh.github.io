@@ -1,0 +1,30 @@
+{
+    "stack.labels.languagesFrameworks": [
+        "Go",
+        "Gin",
+        "GORM",
+        "Java",
+        "Spring Boot",
+        "JavaScript / TypeScript",
+        "SQL"
+    ],
+    "stack.labels.dbMiddlewares": [
+        "Redis",
+        "PostgreSQL",
+        "MySQL",
+        "RabbitMQ",
+        "MongoDB",
+        "Elasticsearch"
+    ],
+    "stack.labels.cloud": [
+        "Docker",
+        "Kubernetes",
+        "KVM",
+        "CI/CD",
+        "Linux",
+        "Prometheus",
+        "Grafana",
+        "Rancher"
+    ],
+    "stack.labels.frontendFullstack": ["React", "NextJS", "Vite", "Tailwind CSS"]
+}
