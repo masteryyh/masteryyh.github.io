@@ -84,6 +84,12 @@ export const resources = {
                 light: "浅色",
                 dark: "深色",
             },
+            loading: "加载中...",
+            error: {
+                title: "发生甚么事了?",
+                message: "无法加载页面数据。请刷新页面重试。",
+                retry: "重试",
+            },
         },
     },
     en: {
@@ -146,6 +152,12 @@ export const resources = {
                 system: "System",
                 light: "Light",
                 dark: "Dark",
+            },
+            loading: "Loading...",
+            error: {
+                title: "Oops...",
+                message: "Unable to load page data. Please refresh the page to try again.",
+                retry: "Retry",
             },
         },
     },

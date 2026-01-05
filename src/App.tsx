@@ -1,7 +1,7 @@
 import { Terminal } from "./components/Terminal";
 import { ThemeToggle } from "./components/ThemeToggle";
 import type { Lang } from "./i18n";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { HeaderBar } from "./components/HeaderBar";
 import { AboutSection } from "./components/AboutSection";
@@ -32,8 +32,8 @@ type Cert = {
 
 type TechStack = Record<string, string[]>;
 
-async function fetchJson<T>(url: string): Promise<T> {
-    const res = await fetch(url, { headers: { Accept: "application/json" } });
+async function fetchJson<T>(url: string, signal?: AbortSignal): Promise<T> {
+    const res = await fetch(url, { headers: { Accept: "application/json" }, signal });
     if (!res.ok) {
         throw new Error(`Failed to fetch ${url}: ${res.status} ${res.statusText}`);
     }
@@ -49,6 +49,16 @@ function App() {
     const [profile, setProfile] = useState<Profile | null>(null);
     const [certs, setCerts] = useState<Cert[] | null>(null);
     const [techStack, setTechStack] = useState<TechStack | null>(null);
+    const [error, setError] = useState<Error | null>(null);
+    const [retryCount, setRetryCount] = useState(0);
+
+    const handleRetry = useCallback(() => {
+        setError(null);
+        setProfile(null);
+        setCerts(null);
+        setTechStack(null);
+        setRetryCount((prev) => prev + 1);
+    }, []);
 
     const aboutItems = t("about.items", { returnObjects: true });
     const aboutList: string[] = Array.isArray(aboutItems)
@@ -61,22 +71,35 @@ function App() {
         const certsUrl = `${baseUrl}assets/certs.json`;
         const techStacksUrl = `${baseUrl}assets/techStacks.json`;
 
-        void (async () => {
+        const abortController = new AbortController();
+
+        async function loadData() {
             try {
                 const [nextProfile, nextCerts, nextTechStack] = await Promise.all([
-                    fetchJson<Profile>(infoUrl),
-                    fetchJson<Cert[]>(certsUrl),
-                    fetchJson<TechStack>(techStacksUrl),
+                    fetchJson<Profile>(infoUrl, abortController.signal),
+                    fetchJson<Cert[]>(certsUrl, abortController.signal),
+                    fetchJson<TechStack>(techStacksUrl, abortController.signal),
                 ]);
 
-                setProfile(nextProfile);
-                setCerts(nextCerts);
-                setTechStack(nextTechStack);
+                if (!abortController.signal.aborted) {
+                    setProfile(nextProfile);
+                    setCerts(nextCerts);
+                    setTechStack(nextTechStack);
+                }
             } catch (e) {
-                console.error(e);
+                if (!abortController.signal.aborted) {
+                    console.error(e);
+                    setError(e instanceof Error ? e : new Error(String(e)));
+                }
             }
-        })();
-    }, []);
+        }
+
+        loadData();
+
+        return () => {
+            abortController.abort();
+        };
+    }, [retryCount]);
 
     useEffect(() => {
         if (!profile) return;
@@ -113,10 +136,48 @@ function App() {
         return () => window.removeEventListener("scroll", onScroll);
     }, []);
 
+    if (error) {
+        return (
+            <div className="min-h-dvh relative">
+                <div className="bg-grid" />
+                <div className="absolute inset-0 flex items-center justify-center">
+                    <div className="mx-4 flex max-w-md flex-col items-center gap-4 text-center">
+                        <div className="flex flex-col gap-2">
+                            <h1 className="text-xl font-semibold text-slate-900 dark:text-slate-50">
+                                {t("error.title")}
+                            </h1>
+                            <p className="text-sm text-slate-600 dark:text-slate-300">
+                                {t("error.message")}
+                            </p>
+                        </div>
+                        <button
+                            type="button"
+                            onClick={handleRetry}
+                            className="rounded-md bg-slate-900 px-4 py-2 text-sm font-medium text-white hover:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2 dark:bg-slate-50 dark:text-slate-900 dark:hover:bg-slate-200 dark:focus:ring-slate-500 dark:focus:ring-offset-2"
+                        >
+                            {t("error.retry")}
+                        </button>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+
     if (!profile || !certs || !techStack) {
         return (
-            <div className="min-h-dvh">
+            <div className="min-h-dvh relative" aria-busy="true">
                 <div className="bg-grid" />
+                <div className="absolute inset-0 flex items-center justify-center">
+                    <div className="flex flex-col items-center gap-4" role="status">
+                        <div
+                            className="h-12 w-12 animate-spin rounded-full border-2 border-slate-400 border-t-transparent dark:border-slate-500 dark:border-t-transparent"
+                            aria-hidden="true"
+                        />
+                        <p className="text-sm font-medium text-slate-600 dark:text-slate-300" aria-live="polite">
+                            {t("loading")}
+                        </p>
+                    </div>
+                </div>
             </div>
         );
     }
