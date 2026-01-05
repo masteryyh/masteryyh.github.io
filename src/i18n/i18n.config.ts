@@ -86,7 +86,7 @@ export const resources = {
             },
             loading: "加载中...",
             error: {
-                title: "加载失败",
+                title: "发生甚么事了?",
                 message: "无法加载页面数据。请刷新页面重试。",
                 retry: "重试",
             },
@@ -155,7 +155,7 @@ export const resources = {
             },
             loading: "Loading...",
             error: {
-                title: "Failed to load",
+                title: "Oops...",
                 message: "Unable to load page data. Please refresh the page to try again.",
                 retry: "Retry",
             },
