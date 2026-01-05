@@ -1,0 +1,20 @@
+[
+    {
+        "name": "CKA (Certified Kubernetes Administrator)",
+        "issuer": "cert.linuxFoundation",
+        "year": "2024",
+        "href": "https://www.credly.com/badges/0289e078-1df9-40d2-8265-927291ec01c7"
+    },
+    {
+        "name": "CKAD (Certified Kubernetes Application Developer)",
+        "issuer": "cert.linuxFoundation",
+        "year": "2024",
+        "href": "https://www.credly.com/badges/3b4a475d-5909-48da-9bbf-2f4c62dac25c"
+    },
+    {
+        "name": "CKS (Certified Kubernetes Security Specialist)",
+        "issuer": "cert.linuxFoundation",
+        "year": "2024",
+        "href": "https://www.credly.com/badges/771f5a45-c6d4-4da1-a559-09e15e9a5326"
+    }
+]

@@ -10,68 +10,35 @@ import { CertsSection } from "./components/CertsSection";
 import { LanguageToggle } from "./components/LanguageToggle";
 import { ContactCard } from "./components/ContactCard";
 
-const PROFILE = {
-    name: "Yanhong Yang (杨雁鸿)",
-    contact: {
-        email: "yyh991013@163.com",
-        wechat: "masteryyh",
-        phone: "+86 15616700368",
-        github: "https://github.com/masteryyh",
-        linkedin: "https://www.linkedin.com/in/masteryyh",
-    },
+type Contact = {
+    email: string;
+    wechat: string;
+    phone: string;
+    github: string;
+    linkedin: string;
 };
 
-const CERTS = [
-    {
-        name: "CKA (Certified Kubernetes Administrator)",
-        issuer: "cert.linuxFoundation",
-        year: "2024",
-        href: "https://www.credly.com/badges/0289e078-1df9-40d2-8265-927291ec01c7",
-    },
-    {
-        name: "CKAD (Certified Kubernetes Application Developer)",
-        issuer: "cert.linuxFoundation",
-        year: "2024",
-        href: "https://www.credly.com/badges/3b4a475d-5909-48da-9bbf-2f4c62dac25c",
-    },
-    {
-        name: "CKS (Certified Kubernetes Security Specialist)",
-        issuer: "cert.linuxFoundation",
-        year: "2024",
-        href: "https://www.credly.com/badges/771f5a45-c6d4-4da1-a559-09e15e9a5326",
-    },
-];
-
-const STACK = {
-    "stack.labels.languagesFrameworks": [
-        "Go",
-        "Gin",
-        "GORM",
-        "Java",
-        "Spring Boot",
-        "JavaScript / TypeScript",
-        "SQL",
-    ],
-    "stack.labels.dbMiddlewares": [
-        "Redis",
-        "PostgreSQL",
-        "MySQL",
-        "RabbitMQ",
-        "MongoDB",
-        "Elasticsearch",
-    ],
-    "stack.labels.cloud": [
-        "Docker",
-        "Kubernetes",
-        "KVM",
-        "CI/CD",
-        "Linux",
-        "Prometheus",
-        "Grafana",
-        "Rancher",
-    ],
-    "stack.labels.frontendFullstack": ["React", "NextJS", "Vite", "Tailwind CSS"],
+type Profile = {
+    name: string;
+    contact: Contact;
 };
+
+type Cert = {
+    name: string;
+    issuer: string;
+    year: string;
+    href: string;
+};
+
+type TechStack = Record<string, string[]>;
+
+async function fetchJson<T>(url: string): Promise<T> {
+    const res = await fetch(url, { headers: { Accept: "application/json" } });
+    if (!res.ok) {
+        throw new Error(`Failed to fetch ${url}: ${res.status} ${res.statusText}`);
+    }
+    return (await res.json()) as T;
+}
 
 function App() {
     const { t, i18n } = useTranslation();
@@ -79,14 +46,42 @@ function App() {
     const [scrolled, setScrolled] = useState(false);
     const [activePath, setActivePath] = useState<string>("");
 
+    const [profile, setProfile] = useState<Profile | null>(null);
+    const [certs, setCerts] = useState<Cert[] | null>(null);
+    const [techStack, setTechStack] = useState<TechStack | null>(null);
+
     const aboutItems = t("about.items", { returnObjects: true });
     const aboutList: string[] = Array.isArray(aboutItems)
         ? aboutItems.filter((it): it is string => typeof it === "string")
         : [];
 
     useEffect(() => {
-        document.title = t("meta.title", { name: PROFILE.name });
-    }, [lang, t]);
+        const baseUrl = import.meta.env.BASE_URL;
+        const infoUrl = `${baseUrl}assets/info.json`;
+        const certsUrl = `${baseUrl}assets/certs.json`;
+        const techStacksUrl = `${baseUrl}assets/techStacks.json`;
+
+        void (async () => {
+            try {
+                const [nextProfile, nextCerts, nextTechStack] = await Promise.all([
+                    fetchJson<Profile>(infoUrl),
+                    fetchJson<Cert[]>(certsUrl),
+                    fetchJson<TechStack>(techStacksUrl),
+                ]);
+
+                setProfile(nextProfile);
+                setCerts(nextCerts);
+                setTechStack(nextTechStack);
+            } catch (e) {
+                console.error(e);
+            }
+        })();
+    }, []);
+
+    useEffect(() => {
+        if (!profile) return;
+        document.title = t("meta.title", { name: profile.name });
+    }, [lang, profile, t]);
 
     useEffect(() => {
         function onScroll() {
@@ -118,6 +113,14 @@ function App() {
         return () => window.removeEventListener("scroll", onScroll);
     }, []);
 
+    if (!profile || !certs || !techStack) {
+        return (
+            <div className="min-h-dvh">
+                <div className="bg-grid" />
+            </div>
+        );
+    }
+
     return (
         <div className="min-h-dvh">
             <div className="bg-grid" />
@@ -135,7 +138,7 @@ function App() {
                         <div className="flex flex-wrap items-center justify-between gap-3">
                             <div className="flex flex-wrap items-baseline gap-x-3 gap-y-2">
                                 <h1 className="break-words text-2xl font-semibold tracking-tight text-slate-900 dark:text-slate-50 sm:text-3xl">
-                                    {PROFILE.name}
+                                    {profile.name}
                                 </h1>
                                 <span className="font-mono text-sm text-slate-500 dark:text-slate-400">
                                     @masteryyh
@@ -158,12 +161,12 @@ function App() {
                     <div className="grid gap-5 sm:gap-6 lg:grid-cols-[1.05fr_0.95fr]">
                         <Terminal
                             title="~/portfolio"
-                            name={PROFILE.name}
+                            name={profile.name}
                             line2={t("terminal.line2")}
-                            contact={PROFILE.contact}
+                            contact={profile.contact}
                         />
 
-                        <ContactCard contact={PROFILE.contact} />
+                        <ContactCard contact={profile.contact} />
                     </div>
                 </header>
 
@@ -172,7 +175,7 @@ function App() {
 
                     <StackSection
                         title={t("stack.title")}
-                        groups={Object.entries(STACK).map(([group, items]) => ({
+                        groups={Object.entries(techStack).map(([group, items]) => ({
                             title: t(group),
                             items,
                         }))}
@@ -182,7 +185,7 @@ function App() {
                         title={t("cert.title")}
                         validLabel={t("cert.valid")}
                         viewLabel={t("cert.viewOnCredly")}
-                        certs={CERTS.map((c) => ({
+                        certs={certs.map((c) => ({
                             name: c.name,
                             issuer: `${t(c.issuer)}`,
                             year: c.year,
