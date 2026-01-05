@@ -1,7 +1,7 @@
 import { Terminal } from "./components/Terminal";
 import { ThemeToggle } from "./components/ThemeToggle";
 import type { Lang } from "./i18n";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { HeaderBar } from "./components/HeaderBar";
 import { AboutSection } from "./components/AboutSection";
@@ -52,13 +52,13 @@ function App() {
     const [error, setError] = useState<Error | null>(null);
     const [retryCount, setRetryCount] = useState(0);
 
-    const handleRetry = () => {
+    const handleRetry = useCallback(() => {
         setError(null);
         setProfile(null);
         setCerts(null);
         setTechStack(null);
         setRetryCount((prev) => prev + 1);
-    };
+    }, []);
 
     const aboutItems = t("about.items", { returnObjects: true });
     const aboutList: string[] = Array.isArray(aboutItems)
@@ -153,7 +153,7 @@ function App() {
                         <button
                             type="button"
                             onClick={handleRetry}
-                            className="rounded-md bg-slate-900 px-4 py-2 text-sm font-medium text-white hover:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2 dark:bg-slate-50 dark:text-slate-900 dark:hover:bg-slate-200"
+                            className="rounded-md bg-slate-900 px-4 py-2 text-sm font-medium text-white hover:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2 dark:bg-slate-50 dark:text-slate-900 dark:hover:bg-slate-200 dark:focus:ring-slate-500 dark:focus:ring-offset-2"
                         >
                             {t("error.retry")}
                         </button>
