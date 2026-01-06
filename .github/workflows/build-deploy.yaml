@@ -29,9 +29,11 @@ jobs:
       - name: Build artifacts
         run: pnpm build
       
-      - name: Deploy to GitHub Pages
-        uses: JamesIves/github-pages-deploy-action@v4
+      - name: Upload artifacts
+        uses: actions/upload-pages-artifact@v4
         with:
-          folder: dist
-          branch: gh-pages
-          token: ${{ secrets.GH_PAT }}
+          path: ./dist
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
