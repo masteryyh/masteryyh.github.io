@@ -29,11 +29,12 @@ jobs:
         with:
           version: latest
 
-      - name: Install dependencies
-        run: pnpm install
-
       - name: Build artifacts
-        run: pnpm build
+        env:
+          VITE_GITHUB_CLIENT_ID: ${{ secrets.CLIENT_ID }}
+        run: |
+          pnpm install
+          pnpm build
       
       - name: Upload artifacts
         uses: actions/upload-pages-artifact@v4
