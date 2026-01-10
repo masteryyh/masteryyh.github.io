@@ -4,6 +4,7 @@ import { LANG_LABEL, SUPPORTED_LANGS, type Lang } from "../i18n";
 import { LanguageToggle } from "./LanguageToggle";
 import { ThemeToggle } from "./ThemeToggle";
 import { SocialButtons } from "./SocialButtons";
+import { GitHubAvatarButton } from "./GitHubAvatarButton";
 
 type HeaderBarProps = {
     scrolled: boolean;
@@ -108,6 +109,8 @@ export function HeaderBar({
                         >
                             {LANG_LABEL[lang]}
                         </button>
+
+                        <GitHubAvatarButton />
                     </div>
                 </div>
             </div>

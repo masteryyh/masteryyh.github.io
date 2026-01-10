@@ -14,7 +14,8 @@
             ],
             "runtimeExecutable": "pnpm",
             "runtimeArgs": ["run", "dev"],
-            "cwd": "${workspaceFolder}"
+            "cwd": "${workspaceFolder}",
+            "console": "integratedTerminal"
         }
     ]
 }

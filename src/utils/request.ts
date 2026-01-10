@@ -4,6 +4,7 @@ import type { Method } from "axios";
 type RequestOptions = {
     signal?: AbortSignal;
     headers?: HeadersInit;
+    body?: unknown;
 };
 
 function normalizeHeaders(headers?: HeadersInit): Record<string, string> {
@@ -31,8 +32,8 @@ export async function request<T>(method: Method, url: string, options: RequestOp
         const res = await axios.request<T>({
             method,
             url,
+            ...(options.body ? { data: options.body } : {}),
             headers: {
-                Accept: "application/json",
                 ...normalizeHeaders(options.headers),
             },
             signal: options.signal,
@@ -52,4 +53,8 @@ export async function request<T>(method: Method, url: string, options: RequestOp
 
 export async function get<T>(url: string, options?: RequestOptions): Promise<T> {
     return request<T>("get", url, options);
+}
+
+export async function post<T>(url: string, body?: unknown, options?: RequestOptions): Promise<T> {
+    return request<T>("post", url, { ...options, body });
 }

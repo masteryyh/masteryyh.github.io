@@ -52,6 +52,15 @@
     "terminal": {
         "line2": "Backend / Fullstack / DevOps"
     },
+    "auth": {
+        "github": {
+            "loading": "Loading…",
+            "login": "Login with GitHub",
+            "loggedInAs": "Logged in as {{login}}",
+            "menuLabel": "GitHub account menu",
+            "logout": "Logout"
+        }
+    },
     "colorMode": {
         "ariaLabel": "Theme: {{mode}}. Click to switch.",
         "system": "System",

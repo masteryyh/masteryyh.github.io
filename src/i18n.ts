@@ -37,6 +37,15 @@ const initPromise = i18n.use(initReactI18next).init({
                     message: "无法加载页面数据。请刷新页面重试。",
                     retry: "重试",
                 },
+                auth: {
+                    github: {
+                        loading: "加载中...",
+                        login: "使用 GitHub 登录",
+                        loggedInAs: "已登录：{{login}}",
+                        menuLabel: "GitHub 账号菜单",
+                        logout: "退出登录",
+                    },
+                },
             },
         },
         en: {
@@ -47,6 +56,15 @@ const initPromise = i18n.use(initReactI18next).init({
                     title: "Oops...",
                     message: "Unable to load page data. Please refresh the page to try again.",
                     retry: "Retry",
+                },
+                auth: {
+                    github: {
+                        loading: "Loading…",
+                        login: "Login with GitHub",
+                        loggedInAs: "Logged in as {{login}}",
+                        menuLabel: "GitHub account menu",
+                        logout: "Logout",
+                    },
                 },
             },
         },

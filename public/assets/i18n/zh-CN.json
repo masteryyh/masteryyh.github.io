@@ -52,6 +52,15 @@
     "terminal": {
         "line2": "后端 / 全栈 / DevOps"
     },
+    "auth": {
+        "github": {
+            "loading": "加载中...",
+            "login": "使用 GitHub 登录",
+            "loggedInAs": "已登录：{{login}}",
+            "menuLabel": "GitHub 账号菜单",
+            "logout": "退出登录"
+        }
+    },
     "colorMode": {
         "ariaLabel": "主题：{{mode}}。点击切换。",
         "system": "系统",
