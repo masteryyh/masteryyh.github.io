@@ -72,5 +72,16 @@
         "title": "发生甚么事了?",
         "message": "无法加载页面数据。请刷新页面重试。",
         "retry": "重试"
+    },
+    "blog": {
+        "title": "博客",
+        "subtitle": "分享我的技术见解和项目经验",
+        "viewAll": "查看所有文章",
+        "backToHome": "返回首页",
+        "backToBlog": "返回博客列表",
+        "minRead": "分钟阅读",
+        "noPosts": "暂无博客文章",
+        "errorLoading": "加载失败",
+        "postNotFound": "文章未找到"
     }
 }

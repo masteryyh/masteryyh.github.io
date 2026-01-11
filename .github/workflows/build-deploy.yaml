@@ -32,6 +32,8 @@ jobs:
       - name: Build artifacts
         env:
           VITE_GITHUB_CLIENT_ID: ${{ secrets.CLIENT_ID }}
+          VITE_GH_PROXY_URL: ${{ secrets.GH_PROXY_URL }}
+          VITE_BASE_URL: ${{ secrets.BASE_URL }}
         run: |
           pnpm install
           pnpm build

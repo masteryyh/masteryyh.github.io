@@ -1,0 +1,94 @@
+/* Code highlighting styles for blog posts */
+/* Base syntax highlighting */
+.hljs {
+    display: block;
+    overflow-x: auto;
+    padding: 1em;
+    background: #0d1117;
+    color: #c9d1d9;
+}
+
+/* Comments */
+.hljs-comment,
+.hljs-quote {
+    color: #8b949e;
+    font-style: italic;
+}
+
+/* Keywords */
+.hljs-keyword,
+.hljs-selector-tag,
+.hljs-subst {
+    color: #ff7b72;
+}
+
+/* Strings */
+.hljs-string,
+.hljs-doctag,
+.hljs-regexp {
+    color: #a5d6ff;
+}
+
+/* Numbers */
+.hljs-number,
+.hljs-literal {
+    color: #79c0ff;
+}
+
+/* Functions */
+.hljs-title,
+.hljs-section,
+.hljs-built_in,
+.hljs-name {
+    color: #d2a8ff;
+}
+
+/* Variables */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-attr {
+    color: #ffa657;
+}
+
+/* Types */
+.hljs-type,
+.hljs-class .hljs-title {
+    color: #7ee787;
+}
+
+/* Operators */
+.hljs-operator,
+.hljs-symbol,
+.hljs-bullet {
+    color: #ff7b72;
+}
+
+/* Meta */
+.hljs-meta {
+    color: #8b949e;
+}
+
+/* Tags */
+.hljs-tag {
+    color: #7ee787;
+}
+
+/* Emphasis */
+.hljs-emphasis {
+    font-style: italic;
+}
+
+.hljs-strong {
+    font-weight: bold;
+}
+
+/* Deletions and additions (for diffs) */
+.hljs-deletion {
+    background: rgba(248, 81, 73, 0.1);
+    color: #ff7b72;
+}
+
+.hljs-addition {
+    background: rgba(46, 160, 67, 0.15);
+    color: #7ee787;
+}

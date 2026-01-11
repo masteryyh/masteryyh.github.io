@@ -1,30 +1,40 @@
-import { Terminal } from "../components/Terminal";
-import type { Lang } from "../i18n";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
+import type { BlogPost } from "./types";
+import { loadAllBlogPosts } from "./loader";
+import { BlogCard } from "./components/BlogCard";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+import { Link, useLocation } from "react-router-dom";
+import type { Lang } from "../i18n";
+import { loadI18nLanguage } from "../i18n";
 import { HeaderBar } from "../components/HeaderBar";
+import { SocialButtons } from "../components/SocialButtons";
 import { ThemeToggle } from "../components/ThemeToggle";
 import { LanguageToggle } from "../components/LanguageToggle";
-import { AboutSection } from "../components/AboutSection";
-import { StackSection } from "../components/StackSection";
-import { CertsSection } from "../components/CertsSection";
-import { ContactCard } from "../components/ContactCard";
-import { loadI18nLanguage } from "../i18n";
-import { CERTS, PROFILE, TECH_STACKS } from "../consts/consts";
-import { SocialButtons } from "../components/SocialButtons";
 import { GitHubAvatarButton } from "../components/GitHubAvatarButton";
-import { BlogSection } from "../blog/components/BlogSection";
+import { PROFILE } from "../consts/consts";
 
-export function HomePage() {
+export function BlogListPage() {
     const { t, i18n } = useTranslation();
+    const location = useLocation();
     const lang: Lang = i18n.resolvedLanguage === "zh-CN" ? "zh-CN" : "en";
     const [scrolled, setScrolled] = useState(false);
-    const [activePath, setActivePath] = useState<string>("");
 
     const [i18nError, setI18nError] = useState<Error | null>(null);
     const [i18nReady, setI18nReady] = useState(false);
     const [languageSwitching, setLanguageSwitching] = useState(false);
     const [retryCount, setRetryCount] = useState(0);
+
+    const activePath = useMemo(() => {
+        const baseUrl = import.meta.env.BASE_URL.replace(/\/+$/, "");
+        const raw = location.pathname;
+        const stripped = baseUrl && raw.startsWith(baseUrl) ? raw.slice(baseUrl.length) : raw;
+        return stripped || "/";
+    }, [location.pathname]);
+    const [posts, setPosts] = useState<BlogPost[]>([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<Error | null>(null);
 
     const handleRetry = useCallback(() => {
         setI18nError(null);
@@ -75,48 +85,40 @@ export function HomePage() {
                 setLanguageSwitching(false);
             }
         },
-        [i18n, languageSwitching, lang],
+        [i18n, lang, languageSwitching],
     );
-
-    const aboutItems = t("about.items", { returnObjects: true });
-    const aboutList: string[] = Array.isArray(aboutItems)
-        ? aboutItems.filter((it): it is string => typeof it === "string")
-        : [];
-
-    useEffect(() => {
-        const name = PROFILE.name;
-        document.title = t("meta.title", { name });
-    }, [lang, t]);
 
     useEffect(() => {
         function onScroll() {
             setScrolled(window.scrollY > 8);
-
-            const anchorY = 120;
-            const sections: Array<{ id: string; segment: string }> = [
-                { id: "about", segment: "about" },
-                { id: "stack", segment: "tech-stacks" },
-                { id: "certs", segment: "certificates" },
-            ];
-
-            let nextPath = "";
-            for (const s of sections) {
-                const el = document.getElementById(s.id);
-                if (!el) continue;
-                const rect = el.getBoundingClientRect();
-                if (rect.top <= anchorY && rect.bottom > anchorY) {
-                    nextPath = `/${s.segment}`;
-                    break;
-                }
-            }
-
-            setActivePath(nextPath);
         }
 
         onScroll();
         window.addEventListener("scroll", onScroll, { passive: true });
         return () => window.removeEventListener("scroll", onScroll);
     }, []);
+
+    useEffect(() => {
+        if (!i18nReady) return;
+
+        void (async () => {
+            try {
+                setLoading(true);
+                setError(null);
+                const allPosts = await loadAllBlogPosts(lang);
+                setPosts(allPosts);
+            } catch (e) {
+                console.error("Failed to load blog posts:", e);
+                setError(e instanceof Error ? e : new Error(String(e)));
+            } finally {
+                setLoading(false);
+            }
+        })();
+    }, [i18nReady, lang]);
+
+    useEffect(() => {
+        document.title = `${t("blog.title")} • masteryyh's home`;
+    }, [lang, t]);
 
     if (i18nError) {
         return (
@@ -174,86 +176,77 @@ export function HomePage() {
                 lang={lang}
                 onLangChange={handleLangChange}
                 langDisabled={languageSwitching}
+                basePath="~/portfolio"
                 linkedInUrl={PROFILE.contact.linkedin}
             />
 
             <div className="mx-auto w-full max-w-6xl px-4 py-10 sm:px-5 sm:py-12">
-                <header className="flex flex-col gap-7">
-                    <div className="flex flex-col gap-3">
-                        <div className="flex flex-wrap items-center justify-between gap-3">
-                            <div className="flex flex-wrap items-baseline gap-x-3 gap-y-2">
-                                <h1 className="break-words text-2xl font-semibold tracking-tight text-slate-900 dark:text-slate-50 sm:text-3xl">
-                                    {PROFILE.name}
-                                </h1>
-                                <span className="font-mono text-sm text-slate-500 dark:text-slate-400">
-                                    @masteryyh
-                                </span>
-                            </div>
-
-                            {!scrolled ? (
-                                <div className="hidden items-center gap-2 sm:flex">
-                                    <SocialButtons linkedInUrl={PROFILE.contact.linkedin} className="flex" />
-
-                                    <ThemeToggle />
-
-                                    <div className="hidden sm:block">
-                                        <LanguageToggle
-                                            value={lang}
-                                            onChange={handleLangChange}
-                                            disabled={languageSwitching}
-                                        />
-                                    </div>
-
-                                    <GitHubAvatarButton />
-                                </div>
-                            ) : null}
+                <header className="flex flex-col gap-6">
+                    <div className="flex flex-wrap items-center justify-between gap-3">
+                        <div className="flex flex-wrap items-baseline gap-x-3 gap-y-2">
+                            <h1 className="break-words text-2xl font-semibold tracking-tight text-slate-900 dark:text-slate-50 sm:text-3xl">
+                                {t("blog.title")}
+                            </h1>
+                            <span className="font-mono text-sm text-slate-500 dark:text-slate-400">~/blogs</span>
                         </div>
 
-                        <p className="text-balance text-sm leading-relaxed text-slate-600 dark:text-slate-300 sm:text-base">
-                            {t("header.tagline")}
-                        </p>
+                        {!scrolled ? (
+                            <div className="hidden items-center gap-2 sm:flex">
+                                <SocialButtons linkedInUrl={PROFILE.contact.linkedin} className="flex" />
+                                <ThemeToggle />
+                                <div className="hidden sm:block">
+                                    <LanguageToggle
+                                        value={lang}
+                                        onChange={handleLangChange}
+                                        disabled={languageSwitching}
+                                    />
+                                </div>
+                                <GitHubAvatarButton />
+                            </div>
+                        ) : null}
                     </div>
 
-                    <div className="grid gap-5 sm:gap-6 lg:grid-cols-[1.05fr_0.95fr]">
-                        <Terminal
-                            title="~/portfolio"
-                            name={PROFILE.name}
-                            line2={t("terminal.line2")}
-                            contact={PROFILE.contact}
-                        />
-
-                        <ContactCard contact={PROFILE.contact} />
-                    </div>
+                    <p className="text-balance text-sm leading-relaxed text-slate-600 dark:text-slate-300 sm:text-base">
+                        {t("blog.subtitle")}
+                    </p>
                 </header>
 
-                <main className="mt-9 grid gap-8 sm:mt-10 sm:gap-10">
-                    <AboutSection title={t("about.title")} items={aboutList} />
+                <main className="mt-9 grid gap-6 sm:mt-10 sm:gap-8">
+                    <div>
+                        <Link
+                            to="/"
+                            className="inline-flex items-center gap-2 text-sm text-slate-600 transition-colors hover:text-blue-600 dark:text-slate-300 dark:hover:text-blue-400"
+                        >
+                            <FontAwesomeIcon icon={faArrowLeft} className="h-3.5 w-3.5" />
+                            {t("blog.backToHome")}
+                        </Link>
+                    </div>
 
-                    <StackSection
-                        title={t("stack.title")}
-                        groups={
-                            Object.entries(TECH_STACKS).map(([group, items]) => ({
-                                title: t(group),
-                                items,
-                            }))
-                        }
-                    />
-
-                    <CertsSection
-                        title={t("cert.title")}
-                        validLabel={t("cert.valid")}
-                        viewLabel={t("cert.viewOnCredly")}
-                        certs={
-                            CERTS.map((c) => ({
-                                name: c.name,
-                                issuer: `${t(c.issuer)}`,
-                                year: c.year,
-                                href: c.href,
-                            }))
-                        }
-                    />
-
-                    <BlogSection />
+                    {loading ? (
+                        <div className="grid gap-5 sm:gap-6 md:grid-cols-2 lg:grid-cols-3">
+                            {[1, 2, 3, 4, 5, 6].map((i) => (
+                                <div
+                                    key={i}
+                                    className="h-40 animate-pulse rounded-lg bg-slate-200 dark:bg-slate-800"
+                                />
+                            ))}
+                        </div>
+                    ) : error ? (
+                        <div className="rounded-lg border border-red-200 bg-red-50 p-5 text-sm text-red-700 dark:border-red-900 dark:bg-red-950 dark:text-red-300">
+                            <div className="font-semibold">{t("blog.errorLoading")}</div>
+                            <div className="mt-1 text-xs opacity-90">{error.message}</div>
+                        </div>
+                    ) : posts.length === 0 ? (
+                        <div className="rounded-lg border border-slate-200 bg-white p-8 text-center text-sm text-slate-600 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-400">
+                            {t("blog.noPosts")}
+                        </div>
+                    ) : (
+                        <div className="grid gap-5 sm:gap-6 md:grid-cols-2 lg:grid-cols-3">
+                            {posts.map((post) => (
+                                <BlogCard key={post.id} post={post} />
+                            ))}
+                        </div>
+                    )}
                 </main>
 
                 <footer className="mt-12 border-t border-slate-200 py-6 text-xs text-slate-600 dark:border-slate-800/70 dark:text-slate-400 sm:py-8 sm:text-sm">

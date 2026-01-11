@@ -72,5 +72,16 @@
         "title": "Oops...",
         "message": "Unable to load page data. Please refresh the page to try again.",
         "retry": "Retry"
+    },
+    "blog": {
+        "title": "Blog",
+        "subtitle": "Sharing my technical insights and project experiences",
+        "viewAll": "View All Posts",
+        "backToHome": "Back to Home",
+        "backToBlog": "Back to Blog",
+        "minRead": "min read",
+        "noPosts": "No blog posts yet",
+        "errorLoading": "Failed to load",
+        "postNotFound": "Post not found"
     }
 }

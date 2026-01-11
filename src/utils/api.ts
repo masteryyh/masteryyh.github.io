@@ -12,11 +12,11 @@ function getGitHubClientId(): string {
 function getGitHubRedirectUri(): string {
     const fromEnv = import.meta.env.VITE_GITHUB_REDIRECT_URI as string | undefined;
     if (fromEnv) return fromEnv;
-    return `${window.location.origin}/auth/github/callback`;
+    return `${import.meta.env.VITE_BASE_URL}/auth/github/callback`;
 }
 
 function getOAuthProxyUri(): string {
-    const fromEnv = import.meta.env.VITE_OAUTH_PROXY_URI as string | undefined;
+    const fromEnv = import.meta.env.VITE_GH_PROXY_URL as string | undefined;
     if (fromEnv) return fromEnv;
     return "https://oauth-proxy.masteryyh.win";
 }
@@ -129,4 +129,19 @@ export function startGitHubLogin(): void {
 
         window.location.assign(url.toString());
     })();
+}
+
+export interface BlogIndex {
+    posts: BlogMetadata[];
+}
+
+export interface BlogMetadata {
+    id: string;
+    date: string;
+    published: boolean;
+    highlight?: boolean;
+}
+
+export async function loadBlogIndex() {
+    return await get<BlogIndex>(`${import.meta.env.VITE_BASE_URL}/blogs/index.json`);
 }
