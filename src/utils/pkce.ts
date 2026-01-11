@@ -9,7 +9,6 @@ function base64UrlEncode(bytes: Uint8Array): string {
 }
 
 export function generateCodeVerifier(length = 64): string {
-    // RFC 7636: code_verifier should be 43..128 chars
     const bytes = new Uint8Array(length);
     crypto.getRandomValues(bytes);
     return base64UrlEncode(bytes);

@@ -1,9 +1,4 @@
-export type GitHubUser = {
-    id: number;
-    login: string;
-    avatar_url: string;
-    html_url: string;
-};
+import type { GitHubUser } from "../utils/api";
 
 type StoredToken = {
     accessToken: string;
@@ -13,8 +8,8 @@ type StoredToken = {
     refreshToken?: string;
 };
 
-const LS_TOKEN = "github_oauth_token_v1";
-const LS_USER = "github_user_v1";
+const LS_TOKEN = "oauth_token";
+const LS_USER = "github_user";
 
 export function loadStoredToken(): StoredToken | null {
     const raw = localStorage.getItem(LS_TOKEN);

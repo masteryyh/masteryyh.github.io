@@ -1,6 +1,5 @@
 import { createContext, useContext } from "react";
-
-import type { GitHubUser } from "./githubStorage";
+import type { GitHubUser } from "../utils/api";
 
 export type AuthState = {
     user: GitHubUser | null;
