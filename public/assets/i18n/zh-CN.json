@@ -75,10 +75,10 @@
     },
     "blog": {
         "title": "博客",
-        "subtitle": "分享我的技术见解和项目经验",
+        "subtitle": "分享各种有的没的",
         "viewAll": "查看所有文章",
         "backToHome": "返回首页",
-        "backToBlog": "返回博客列表",
+        "backToBlog": "返回列表",
         "minRead": "分钟阅读",
         "noPosts": "暂无博客文章",
         "errorLoading": "加载失败",
