@@ -3,7 +3,7 @@
 
 export const BLOG_POSTS = {
     "ts-double-questionmark-vs-double-pipe-vs-double-ampersand": {
-        "en": { frontmatter: {"title":"The ?? , || and && Operators in JS/TS","description":"For JS/TS developers, understanding the differences between the nullish coalescing operator (??), logical OR (||), and logical AND (&&) is crucial.","date":"2026-01-18T12:00:00.000Z","tags":["TypeScript","JavaScript"],"highlight":true}, content: `
+        "en": { frontmatter: {"title":"The ??, || and && Operators in JS/TS","description":"For JS/TS developers, understanding the differences between the nullish coalescing operator (??), logical OR (||), and logical AND (&&) is crucial.","date":"2026-01-18T12:00:00.000Z","tags":["TypeScript","JavaScript"],"highlight":true}, content: `
 # Preface
 
 In other languages, \`||\` and \`&&\` are already ubiquitous operators in daily development (disregarding C++ with its operator overloading quirks). Combined together, they form flexible conditional logic. However, JavaScript/TypeScript not only adds additional usage and semantics to these two operators but also introduces a new \`??\` operator. If you're a beginner or transitioning from another language and start coding without carefully reading the documentation, it's easy to misunderstand and misuse these operators, leading to subtle, hard-to-detect bugs.

@@ -2,12 +2,15 @@ import { Link } from "react-router-dom";
 import type { BlogPost } from "../types";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faClock, faCalendar, faTag } from "@fortawesome/free-solid-svg-icons";
+import { useTranslation } from "react-i18next";
 
 interface BlogCardProps {
     post: BlogPost;
 }
 
 export function BlogCard({ post }: BlogCardProps) {
+    const { t } = useTranslation();
+
     return (
         <Link
             to={`/blogs/${post.id}`}
@@ -31,7 +34,7 @@ export function BlogCard({ post }: BlogCardProps) {
                     {post.readingTime && (
                         <span className="flex items-center gap-1.5">
                             <FontAwesomeIcon icon={faClock} className="h-3.5 w-3.5" />
-                            {post.readingTime} min read
+                            {`${post.readingTime} ${t("blog.minRead")}`}
                         </span>
                     )}
 
