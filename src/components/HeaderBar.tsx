@@ -40,7 +40,7 @@ export function HeaderBar({
     }, [activePath]);
 
     const languageButtonClassName =
-        "inline-flex h-9 items-center justify-center rounded-full border border-slate-200/80 bg-white/55 px-3 text-xs font-semibold text-slate-700 shadow-sm transition-[background-color,border-color,box-shadow,transform] duration-200 hover:bg-white/80 hover:shadow dark:border-slate-800/70 dark:bg-slate-950/35 dark:text-slate-200 dark:hover:bg-slate-950/55 active:scale-[0.97]";
+        "inline-flex h-9 items-center justify-center rounded-full border border-slate-200/70 bg-white/70 px-3 text-xs font-semibold text-slate-700 shadow-sm backdrop-blur-sm transition-all duration-200 hover:bg-white hover:border-slate-300 hover:shadow-md active:scale-95 dark:border-slate-700/60 dark:bg-slate-900/70 dark:text-slate-200 dark:hover:bg-slate-900 dark:hover:border-slate-600";
 
     const nextLang = (() => {
         const idx = SUPPORTED_LANGS.indexOf(lang);
@@ -50,10 +50,11 @@ export function HeaderBar({
 
     return (
         <div
-            className={`fixed left-0 right-0 top-0 z-40 w-full border-b transition-[opacity,transform,background-color,border-color,backdrop-filter] duration-300 ${scrolled
-                ? "pointer-events-auto opacity-100 translate-y-0 border-slate-200/70 bg-white/65 backdrop-blur-md dark:border-slate-800/60 dark:bg-slate-950/45"
-                : "pointer-events-none opacity-0 -translate-y-2 border-transparent bg-transparent backdrop-blur-0"
-                }`}
+            className={`fixed left-0 right-0 top-0 z-40 w-full border-b transition-all duration-300 ease-out ${
+                scrolled
+                    ? "pointer-events-auto translate-y-0 border-slate-200/60 bg-white/80 opacity-100 shadow-sm backdrop-blur-lg dark:border-slate-800/50 dark:bg-slate-900/80"
+                    : "pointer-events-none -translate-y-2 border-transparent bg-transparent opacity-0 backdrop-blur-0"
+            }`}
         >
             <div className="mx-auto w-full max-w-6xl px-3 py-2.5 sm:px-4 sm:py-3">
                 <div className="flex w-full items-center justify-between gap-3">
@@ -84,10 +85,7 @@ export function HeaderBar({
                     </div>
 
                     <div className="flex items-center gap-2">
-                        <SocialButtons
-                            className="hidden sm:flex"
-                            linkedInUrl={linkedInUrl}
-                        />
+                        <SocialButtons className="hidden sm:flex" linkedInUrl={linkedInUrl} />
 
                         <ThemeToggle />
 

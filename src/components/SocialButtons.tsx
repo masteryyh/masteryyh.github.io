@@ -10,7 +10,7 @@ type SocialButtonsProps = {
 
 export function SocialButtons({ linkedInUrl, className }: SocialButtonsProps) {
     const iconButtonClassName =
-        "inline-flex h-10 w-10 items-center justify-center rounded-full bg-transparent text-lg text-slate-600 transition-[color,transform] duration-200 hover:text-slate-900 dark:text-slate-300 dark:hover:text-slate-100 active:scale-[0.97] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400/40 dark:focus-visible:ring-emerald-300/30";
+        "inline-flex h-10 w-10 items-center justify-center rounded-full bg-slate-100/80 text-lg text-slate-700 backdrop-blur-sm transition-all duration-200 hover:scale-110 hover:bg-slate-200 hover:text-slate-900 hover:shadow-md dark:bg-slate-800/60 dark:text-slate-300 dark:hover:bg-slate-700/80 dark:hover:text-slate-100 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400/50 focus-visible:ring-offset-2 dark:focus-visible:ring-emerald-500/40";
 
     return (
         <div className={`items-center gap-2 ${className}`}>
@@ -39,7 +39,7 @@ export function SocialButtons({ linkedInUrl, className }: SocialButtonsProps) {
             <button
                 type="button"
                 disabled
-                className={`${iconButtonClassName} opacity-50 cursor-not-allowed active:scale-100`}
+                className={`${iconButtonClassName} cursor-not-allowed opacity-40 hover:scale-100 hover:bg-slate-100/80 hover:text-slate-700 dark:hover:bg-slate-800/60 dark:hover:text-slate-300`}
                 aria-label="Download resume (coming soon)"
                 title="Resume (coming soon)"
             >

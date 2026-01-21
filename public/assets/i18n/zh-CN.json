@@ -80,7 +80,9 @@
         "backToHome": "返回首页",
         "backToBlog": "返回列表",
         "minRead": "分钟阅读",
+        "postCount": "共 {{count}} 篇",
         "noPosts": "暂无博客文章",
+        "checkBackSoon": "敬请期待新内容",
         "errorLoading": "加载失败",
         "postNotFound": "文章未找到"
     }

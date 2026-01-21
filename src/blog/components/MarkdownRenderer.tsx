@@ -119,16 +119,19 @@ const markdownComponents: Components = {
         // react-markdown passes inline code without a surrounding <pre>.
         // For fenced code blocks, <code> is rendered inside our custom <pre> above.
         const isBlock = typeof className === "string" && /\blanguage-/.test(className);
-        const combinedClassName = [
-            isBlock ? "md-code hljs" : "md-inline-code",
-            className,
-        ]
-            .filter(Boolean)
-            .join(" ");
+
+        // For inline code, strip backticks if they're accidentally included
+        let processedChildren = children;
+        if (!isBlock && typeof children === "string") {
+            // Remove leading/trailing backticks that might have been included
+            processedChildren = children.replace(/^`+|`+$/g, "");
+        }
+
+        const combinedClassName = [isBlock ? "md-code hljs" : "md-inline-code", className].filter(Boolean).join(" ");
 
         return (
             <code className={combinedClassName} {...props}>
-                {children}
+                {processedChildren}
             </code>
         );
     },
@@ -140,7 +143,14 @@ export function MarkdownRenderer({ content }: MarkdownRendererProps) {
             <ReactMarkdown
                 remarkPlugins={[remarkGfm, remarkFrontmatter]}
                 rehypePlugins={[
-                    rehypeHighlight,
+                    [
+                        rehypeHighlight,
+                        {
+                            // Only highlight code blocks, not inline code
+                            subset: false,
+                            ignoreMissing: true,
+                        },
+                    ],
                     rehypeSlug,
                     [
                         rehypeAutolinkHeadings,

@@ -1,36 +1,30 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useParams, Link, Navigate, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import type { BlogPost } from "./types";
 import { loadBlogPost } from "./loader";
 import { MarkdownRenderer } from "./components/MarkdownRenderer";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-    faArrowLeft,
-    faCalendar,
-    faClock,
-    faTag,
-} from "@fortawesome/free-solid-svg-icons";
+import { faArrowLeft, faCalendar, faClock, faTag } from "@fortawesome/free-solid-svg-icons";
 import type { Lang } from "../i18n";
-import { loadI18nLanguage } from "../i18n";
 import { HeaderBar } from "../components/HeaderBar";
-import { SocialButtons } from "../components/SocialButtons";
-import { ThemeToggle } from "../components/ThemeToggle";
-import { LanguageToggle } from "../components/LanguageToggle";
-import { GitHubAvatarButton } from "../components/GitHubAvatarButton";
 import { PROFILE } from "../consts/consts";
+import { useI18nLoader } from "../hooks/useI18nLoader";
+import { useLanguageSwitcher } from "../hooks/useLanguageSwitcher";
+import { useScrollState } from "../hooks/useScrollState";
+import { SEO } from "../components/SEO";
+import { BlogPostSkeleton } from "../components/Skeleton";
 
 export function BlogPostPage() {
     const { id } = useParams<{ id: string }>();
     const { t, i18n } = useTranslation();
     const location = useLocation();
     const lang: Lang = i18n.resolvedLanguage === "zh-CN" ? "zh-CN" : "en";
-    const [scrolled, setScrolled] = useState(false);
 
-    const [i18nError, setI18nError] = useState<Error | null>(null);
-    const [i18nReady, setI18nReady] = useState(false);
-    const [languageSwitching, setLanguageSwitching] = useState(false);
-    const [retryCount, setRetryCount] = useState(0);
+    // Use custom hooks to reduce code duplication
+    const { i18nError, i18nReady, handleRetry } = useI18nLoader(i18n.language);
+    const { languageSwitching, handleLangChange } = useLanguageSwitcher(i18n, lang);
+    const scrolled = useScrollState(8);
 
     const activePath = useMemo(() => {
         const baseUrl = import.meta.env.BASE_URL.replace(/\/+$/, "");
@@ -41,68 +35,6 @@ export function BlogPostPage() {
     const [post, setPost] = useState<BlogPost | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<Error | null>(null);
-
-    const handleRetry = useCallback(() => {
-        setI18nError(null);
-        setI18nReady(false);
-        setLanguageSwitching(false);
-        setRetryCount((prev) => prev + 1);
-    }, []);
-
-    useEffect(() => {
-        let cancelled = false;
-
-        void (async () => {
-            try {
-                await loadI18nLanguage(i18n.language as Lang);
-                if (!cancelled) {
-                    setI18nReady(true);
-                }
-            } catch (e) {
-                if (!cancelled) {
-                    console.error(e);
-                    setI18nError(e instanceof Error ? e : new Error(String(e)));
-                }
-            }
-        })();
-
-        return () => {
-            cancelled = true;
-        };
-    }, [retryCount, i18n.language]);
-
-    const handleLangChange = useCallback(
-        async (next: Lang) => {
-            if (next === lang) return;
-            if (languageSwitching) return;
-
-            try {
-                setLanguageSwitching(true);
-                await loadI18nLanguage(next);
-                await i18n.changeLanguage(next);
-
-                await new Promise<void>((resolve) => {
-                    requestAnimationFrame(() => resolve());
-                });
-            } catch (e) {
-                console.error(e);
-                setI18nError(e instanceof Error ? e : new Error(String(e)));
-            } finally {
-                setLanguageSwitching(false);
-            }
-        },
-        [i18n, lang, languageSwitching],
-    );
-
-    useEffect(() => {
-        function onScroll() {
-            setScrolled(window.scrollY > 8);
-        }
-
-        onScroll();
-        window.addEventListener("scroll", onScroll, { passive: true });
-        return () => window.removeEventListener("scroll", onScroll);
-    }, []);
 
     useEffect(() => {
         if (!id) return;
@@ -146,9 +78,7 @@ export function BlogPostPage() {
                             <h1 className="text-xl font-semibold text-slate-900 dark:text-slate-50">
                                 {t("error.title")}
                             </h1>
-                            <p className="text-sm text-slate-600 dark:text-slate-300">
-                                {t("error.message")}
-                            </p>
+                            <p className="text-sm text-slate-600 dark:text-slate-300">{t("error.message")}</p>
                         </div>
                         <button
                             type="button"
@@ -184,6 +114,18 @@ export function BlogPostPage() {
 
     return (
         <div className="min-h-dvh">
+            {post ? (
+                <SEO
+                    title={`${post.title} • masteryyh's home`}
+                    description={post.description}
+                    image={post.cover}
+                    type="article"
+                    author={PROFILE.name}
+                    publishedTime={post.date}
+                    tags={post.tags}
+                />
+            ) : null}
+
             <div className="bg-grid" />
 
             <HeaderBar
@@ -197,118 +139,107 @@ export function BlogPostPage() {
             />
 
             <div className="mx-auto w-full max-w-6xl px-4 py-10 sm:px-5 sm:py-12">
-                <header className="flex flex-col gap-6">
-                    <div className="flex flex-wrap items-center justify-between gap-3">
-                        <div className="flex flex-wrap items-baseline gap-x-3 gap-y-2">
-                            <h1 className="break-words text-2xl font-semibold tracking-tight text-slate-900 dark:text-slate-50 sm:text-3xl">
-                                {t("blog.title")}
-                            </h1>
-                            <span className="font-mono text-sm text-slate-500 dark:text-slate-400">~/blogs</span>
-                        </div>
-
-                        {!scrolled ? (
-                            <div className="hidden items-center gap-2 sm:flex">
-                                <SocialButtons linkedInUrl={PROFILE.contact.linkedin} className="flex" />
-                                <ThemeToggle />
-                                <div className="hidden sm:block">
-                                    <LanguageToggle
-                                        value={lang}
-                                        onChange={handleLangChange}
-                                        disabled={languageSwitching}
-                                    />
-                                </div>
-                                <GitHubAvatarButton />
-                            </div>
-                        ) : null}
-                    </div>
+                <header className="mb-10">
+                    <Link
+                        to="/blogs"
+                        className="group mb-8 inline-flex w-fit items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-slate-600 transition-all duration-200 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800/50 dark:hover:text-slate-100"
+                    >
+                        <FontAwesomeIcon
+                            icon={faArrowLeft}
+                            className="h-3.5 w-3.5 transition-transform duration-200 group-hover:-translate-x-0.5"
+                            aria-hidden="true"
+                        />
+                        <span>{t("blog.backToBlog")}</span>
+                    </Link>
                 </header>
 
-                <main className="mt-9 grid gap-6 sm:mt-10 sm:gap-8">
-                    <div>
-                        <Link
-                            to="/blogs"
-                            className="inline-flex items-center gap-2 text-sm text-slate-600 transition-colors hover:text-blue-600 dark:text-slate-300 dark:hover:text-blue-400"
-                        >
-                            <FontAwesomeIcon icon={faArrowLeft} className="h-3.5 w-3.5" />
-                            {t("blog.backToBlog")}
-                        </Link>
-                    </div>
-
-                    <div className="mx-auto w-full max-w-4xl">
-                        {loading ? (
-                            <div>
-                                <div className="mb-8 h-6 w-32 animate-pulse rounded bg-slate-200 dark:bg-slate-800" />
-                                <div className="mb-12 space-y-4">
-                                    <div className="h-10 w-3/4 animate-pulse rounded bg-slate-200 dark:bg-slate-800" />
-                                    <div className="h-6 w-full animate-pulse rounded bg-slate-200 dark:bg-slate-800" />
-                                </div>
-                                <div className="space-y-3">
-                                    {[1, 2, 3, 4, 5].map((i) => (
-                                        <div
-                                            key={i}
-                                            className="h-4 animate-pulse rounded bg-slate-200 dark:bg-slate-800"
-                                        />
-                                    ))}
-                                </div>
-                            </div>
-                        ) : error || !post ? (
-                            <div className="rounded-lg border border-red-200 bg-red-50 p-6 text-center text-red-600 dark:border-red-900 dark:bg-red-950 dark:text-red-400">
-                                <p className="mb-2 font-semibold">{t("blog.postNotFound")}</p>
-                                {error && <p className="text-sm">{error.message}</p>}
-                            </div>
-                        ) : (
-                            <article>
-                                <header className="mb-10">
-                                    <h2 className="mb-4 text-3xl font-semibold leading-tight tracking-tight text-slate-900 dark:text-slate-50 sm:text-4xl">
-                                        {post.title}
-                                    </h2>
-
-                                    <p className="mb-6 text-base leading-relaxed text-slate-600 dark:text-slate-300 sm:text-lg">
-                                        {post.description}
-                                    </p>
-
-                                    <div className="flex flex-wrap items-center gap-4 border-b border-slate-200 pb-6 text-sm text-slate-500 dark:border-slate-800 dark:text-slate-500">
-                                        <span className="flex items-center gap-2">
-                                            <FontAwesomeIcon icon={faCalendar} className="h-4 w-4" />
-                                            {new Date(post.date).toLocaleDateString()}
-                                        </span>
-
-                                        {post.readingTime && (
-                                            <span className="flex items-center gap-2">
-                                                <FontAwesomeIcon icon={faClock} className="h-4 w-4" />
-                                                {post.readingTime} {t("blog.minRead")}
-                                            </span>
-                                        )}
-
-                                        {post.tags && post.tags.length > 0 && (
-                                            <span className="flex items-center gap-2">
-                                                <FontAwesomeIcon icon={faTag} className="h-4 w-4" />
-                                                {post.tags.join(", ")}
-                                            </span>
-                                        )}
-                                    </div>
-                                </header>
-
-                                <MarkdownRenderer content={post.content || ""} />
-
-                                <footer className="mt-12 border-t border-slate-200 pt-8 dark:border-slate-800">
-                                    <Link
-                                        to="/blogs"
-                                        className="inline-flex items-center gap-2 text-sm font-medium text-blue-600 transition-colors hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300"
+                <main className="mx-auto w-full max-w-4xl">
+                    {loading ? (
+                        <BlogPostSkeleton />
+                    ) : error || !post ? (
+                        <div className="overflow-hidden rounded-xl border border-red-200/60 bg-gradient-to-br from-red-50 to-rose-50/30 p-8 shadow-soft dark:border-red-900/40 dark:from-red-950/30 dark:to-rose-950/20">
+                            <div className="flex flex-col items-center gap-4 text-center">
+                                <div className="flex h-12 w-12 items-center justify-center rounded-full bg-red-100 dark:bg-red-900/40">
+                                    <svg
+                                        className="h-6 w-6 text-red-600 dark:text-red-400"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        viewBox="0 0 24 24"
+                                        aria-hidden="true"
                                     >
-                                        <FontAwesomeIcon icon={faArrowLeft} className="h-3.5 w-3.5" />
-                                        {t("blog.backToBlog")}
-                                    </Link>
-                                </footer>
-                            </article>
-                        )}
-                    </div>
+                                        <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            strokeWidth={2}
+                                            d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                                        />
+                                    </svg>
+                                </div>
+                                <div className="space-y-2">
+                                    <div className="font-semibold text-red-700 dark:text-red-300">
+                                        {error ? t("blog.errorLoadingPost") : t("blog.postNotFound")}
+                                    </div>
+                                    {error && (
+                                        <div className="text-sm text-red-600/90 dark:text-red-400/80">
+                                            {error.message}
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
+                        </div>
+                    ) : (
+                        <article>
+                            <header className="mb-10">
+                                <h2 className="mb-4 text-3xl font-semibold leading-tight tracking-tight text-slate-900 dark:text-slate-50 sm:text-4xl">
+                                    {post.title}
+                                </h2>
+
+                                <p className="mb-6 text-base leading-relaxed text-slate-600 dark:text-slate-300 sm:text-lg">
+                                    {post.description}
+                                </p>
+
+                                <div className="flex flex-wrap items-center gap-4 border-b border-slate-200 pb-6 text-sm text-slate-500 dark:border-slate-800 dark:text-slate-500">
+                                    <span className="flex items-center gap-2">
+                                        <FontAwesomeIcon icon={faCalendar} className="h-4 w-4" />
+                                        {new Date(post.date).toLocaleDateString()}
+                                    </span>
+
+                                    {post.readingTime && (
+                                        <span className="flex items-center gap-2">
+                                            <FontAwesomeIcon icon={faClock} className="h-4 w-4" />
+                                            {post.readingTime} {t("blog.minRead")}
+                                        </span>
+                                    )}
+
+                                    {post.tags && post.tags.length > 0 && (
+                                        <span className="flex items-center gap-2">
+                                            <FontAwesomeIcon icon={faTag} className="h-4 w-4" />
+                                            {post.tags.join(", ")}
+                                        </span>
+                                    )}
+                                </div>
+                            </header>
+
+                            <MarkdownRenderer content={post.content || ""} />
+
+                            <footer className="mt-12 border-t border-slate-200 pt-8 dark:border-slate-800">
+                                <Link
+                                    to="/blogs"
+                                    className="inline-flex items-center gap-2 text-sm font-medium text-blue-600 transition-colors hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300"
+                                >
+                                    <FontAwesomeIcon icon={faArrowLeft} className="h-3.5 w-3.5" />
+                                    {t("blog.backToBlog")}
+                                </Link>
+                            </footer>
+                        </article>
+                    )}
                 </main>
 
                 <footer className="mt-12 border-t border-slate-200 py-6 text-xs text-slate-600 dark:border-slate-800/70 dark:text-slate-400 sm:py-8 sm:text-sm">
                     <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
                         <div>
-                            <span className="text-slate-900 dark:text-slate-300">masteryyh</span> • {t("footer.builtWith")}
+                            <span className="text-slate-900 dark:text-slate-300">masteryyh</span> •{" "}
+                            {t("footer.builtWith")}
                         </div>
                     </div>
                 </footer>

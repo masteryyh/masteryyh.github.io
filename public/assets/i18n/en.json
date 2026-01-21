@@ -80,7 +80,9 @@
         "backToHome": "Back to Home",
         "backToBlog": "Back to Blog",
         "minRead": "min read",
+        "postCount": "{{count}} posts",
         "noPosts": "No blog posts yet",
+        "checkBackSoon": "Check back soon for new content",
         "errorLoading": "Failed to load",
         "postNotFound": "Post not found"
     }

@@ -49,11 +49,18 @@ export function CertsSection({ title, validLabel, viewLabel, certs, isLoading, e
                 <div className="grid gap-4 md:grid-cols-2">
                     {certs.map((c) => (
                         <Card key={c.name}>
-                            <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
-                                <div className="min-w-0">
-                                    <div className="break-words text-sm font-semibold text-slate-900 dark:text-slate-100">{c.name}</div>
-                                    <div className="mt-1 text-sm text-slate-600 dark:text-slate-400">
-                                        {c.issuer} • {c.year}
+                            <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
+                                <div className="min-w-0 flex-1">
+                                    <h3 className="break-words text-sm font-semibold leading-snug text-slate-900 dark:text-slate-50">
+                                        {c.name}
+                                    </h3>
+                                    <div className="mt-2 flex items-center gap-2 text-xs text-slate-600 dark:text-slate-400">
+                                        <span>{c.issuer}</span>
+                                        <span
+                                            className="h-1 w-1 rounded-full bg-slate-400 dark:bg-slate-600"
+                                            aria-hidden="true"
+                                        />
+                                        <time>{c.year}</time>
                                     </div>
                                 </div>
                                 <div className="shrink-0 self-start">

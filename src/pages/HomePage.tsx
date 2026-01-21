@@ -1,6 +1,6 @@
 import { Terminal } from "../components/Terminal";
 import type { Lang } from "../i18n";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { HeaderBar } from "../components/HeaderBar";
 import { ThemeToggle } from "../components/ThemeToggle";
@@ -9,74 +9,22 @@ import { AboutSection } from "../components/AboutSection";
 import { StackSection } from "../components/StackSection";
 import { CertsSection } from "../components/CertsSection";
 import { ContactCard } from "../components/ContactCard";
-import { loadI18nLanguage } from "../i18n";
 import { CERTS, PROFILE, TECH_STACKS } from "../consts/consts";
 import { SocialButtons } from "../components/SocialButtons";
 import { GitHubAvatarButton } from "../components/GitHubAvatarButton";
 import { BlogSection } from "../blog/components/BlogSection";
+import { useI18nLoader } from "../hooks/useI18nLoader";
+import { useLanguageSwitcher } from "../hooks/useLanguageSwitcher";
+import { useScrollState } from "../hooks/useScrollState";
 
 export function HomePage() {
     const { t, i18n } = useTranslation();
     const lang: Lang = i18n.resolvedLanguage === "zh-CN" ? "zh-CN" : "en";
-    const [scrolled, setScrolled] = useState(false);
     const [activePath, setActivePath] = useState<string>("");
 
-    const [i18nError, setI18nError] = useState<Error | null>(null);
-    const [i18nReady, setI18nReady] = useState(false);
-    const [languageSwitching, setLanguageSwitching] = useState(false);
-    const [retryCount, setRetryCount] = useState(0);
-
-    const handleRetry = useCallback(() => {
-        setI18nError(null);
-        setI18nReady(false);
-        setLanguageSwitching(false);
-        setRetryCount((prev) => prev + 1);
-    }, []);
-
-    useEffect(() => {
-        let cancelled = false;
-
-        void (async () => {
-            try {
-                await loadI18nLanguage(i18n.language as Lang);
-                if (!cancelled) {
-                    setI18nReady(true);
-                }
-            } catch (e) {
-                if (!cancelled) {
-                    console.error(e);
-                    setI18nError(e instanceof Error ? e : new Error(String(e)));
-                }
-            }
-        })();
-
-        return () => {
-            cancelled = true;
-        };
-    }, [retryCount, i18n.language]);
-
-    const handleLangChange = useCallback(
-        async (next: Lang) => {
-            if (next === lang) return;
-            if (languageSwitching) return;
-
-            try {
-                setLanguageSwitching(true);
-                await loadI18nLanguage(next);
-                await i18n.changeLanguage(next);
-
-                await new Promise<void>((resolve) => {
-                    requestAnimationFrame(() => resolve());
-                });
-            } catch (e) {
-                console.error(e);
-                setI18nError(e instanceof Error ? e : new Error(String(e)));
-            } finally {
-                setLanguageSwitching(false);
-            }
-        },
-        [i18n, languageSwitching, lang],
-    );
+    const { i18nError, i18nReady, handleRetry } = useI18nLoader(i18n.language);
+    const { languageSwitching, handleLangChange } = useLanguageSwitcher(i18n, lang);
+    const scrolled = useScrollState(8);
 
     const aboutItems = t("about.items", { returnObjects: true });
     const aboutList: string[] = Array.isArray(aboutItems)
@@ -88,18 +36,20 @@ export function HomePage() {
         document.title = t("meta.title", { name });
     }, [lang, t]);
 
+    const sections = useMemo(
+        () => [
+            { id: "about", segment: "about" },
+            { id: "stack", segment: "tech-stacks" },
+            { id: "certs", segment: "certificates" },
+        ],
+        [],
+    );
+
     useEffect(() => {
-        function onScroll() {
-            setScrolled(window.scrollY > 8);
-
+        function updateActivePath() {
             const anchorY = 120;
-            const sections: Array<{ id: string; segment: string }> = [
-                { id: "about", segment: "about" },
-                { id: "stack", segment: "tech-stacks" },
-                { id: "certs", segment: "certificates" },
-            ];
-
             let nextPath = "";
+
             for (const s of sections) {
                 const el = document.getElementById(s.id);
                 if (!el) continue;
@@ -113,10 +63,10 @@ export function HomePage() {
             setActivePath(nextPath);
         }
 
-        onScroll();
-        window.addEventListener("scroll", onScroll, { passive: true });
-        return () => window.removeEventListener("scroll", onScroll);
-    }, []);
+        updateActivePath();
+        window.addEventListener("scroll", updateActivePath, { passive: true });
+        return () => window.removeEventListener("scroll", updateActivePath);
+    }, [sections]);
 
     if (i18nError) {
         return (
@@ -128,9 +78,7 @@ export function HomePage() {
                             <h1 className="text-xl font-semibold text-slate-900 dark:text-slate-50">
                                 {t("error.title")}
                             </h1>
-                            <p className="text-sm text-slate-600 dark:text-slate-300">
-                                {t("error.message")}
-                            </p>
+                            <p className="text-sm text-slate-600 dark:text-slate-300">{t("error.message")}</p>
                         </div>
                         <button
                             type="button"
@@ -178,16 +126,25 @@ export function HomePage() {
             />
 
             <div className="mx-auto w-full max-w-6xl px-4 py-10 sm:px-5 sm:py-12">
-                <header className="flex flex-col gap-7">
-                    <div className="flex flex-col gap-3">
-                        <div className="flex flex-wrap items-center justify-between gap-3">
-                            <div className="flex flex-wrap items-baseline gap-x-3 gap-y-2">
-                                <h1 className="break-words text-2xl font-semibold tracking-tight text-slate-900 dark:text-slate-50 sm:text-3xl">
+                <header className="flex flex-col gap-8">
+                    <div className="flex flex-col gap-4">
+                        <div className="flex flex-wrap items-center justify-between gap-4">
+                            <div className="flex flex-col gap-2">
+                                <h1 className="break-words bg-gradient-to-br from-slate-900 to-slate-700 bg-clip-text text-3xl font-bold tracking-tight text-transparent dark:from-slate-50 dark:to-slate-300 sm:text-4xl">
                                     {PROFILE.name}
                                 </h1>
-                                <span className="font-mono text-sm text-slate-500 dark:text-slate-400">
-                                    @masteryyh
-                                </span>
+                                <div className="flex items-center gap-2">
+                                    <span className="font-mono text-sm text-slate-500 dark:text-slate-400">
+                                        @masteryyh
+                                    </span>
+                                    <span
+                                        className="h-1 w-1 rounded-full bg-slate-400 dark:bg-slate-600"
+                                        aria-hidden="true"
+                                    />
+                                    <span className="text-xs text-slate-500 dark:text-slate-400">
+                                        Backend / Fullstack / DevOps
+                                    </span>
+                                </div>
                             </div>
 
                             {!scrolled ? (
@@ -209,7 +166,7 @@ export function HomePage() {
                             ) : null}
                         </div>
 
-                        <p className="text-balance text-sm leading-relaxed text-slate-600 dark:text-slate-300 sm:text-base">
+                        <p className="max-w-2xl text-balance text-sm leading-relaxed text-slate-600 dark:text-slate-300 sm:text-base">
                             {t("header.tagline")}
                         </p>
                     </div>
@@ -231,26 +188,22 @@ export function HomePage() {
 
                     <StackSection
                         title={t("stack.title")}
-                        groups={
-                            Object.entries(TECH_STACKS).map(([group, items]) => ({
-                                title: t(group),
-                                items,
-                            }))
-                        }
+                        groups={Object.entries(TECH_STACKS).map(([group, items]) => ({
+                            title: t(group),
+                            items,
+                        }))}
                     />
 
                     <CertsSection
                         title={t("cert.title")}
                         validLabel={t("cert.valid")}
                         viewLabel={t("cert.viewOnCredly")}
-                        certs={
-                            CERTS.map((c) => ({
-                                name: c.name,
-                                issuer: `${t(c.issuer)}`,
-                                year: c.year,
-                                href: c.href,
-                            }))
-                        }
+                        certs={CERTS.map((c) => ({
+                            name: c.name,
+                            issuer: `${t(c.issuer)}`,
+                            year: c.year,
+                            href: c.href,
+                        }))}
                     />
 
                     <BlogSection />
@@ -259,7 +212,8 @@ export function HomePage() {
                 <footer className="mt-12 border-t border-slate-200 py-6 text-xs text-slate-600 dark:border-slate-800/70 dark:text-slate-400 sm:py-8 sm:text-sm">
                     <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
                         <div>
-                            <span className="text-slate-900 dark:text-slate-300">masteryyh</span> • {t("footer.builtWith")}
+                            <span className="text-slate-900 dark:text-slate-300">masteryyh</span> •{" "}
+                            {t("footer.builtWith")}
                         </div>
                     </div>
                 </footer>
