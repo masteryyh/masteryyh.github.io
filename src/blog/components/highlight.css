@@ -7,65 +7,64 @@ We intentionally render fenced code blocks inside a `.not-prose` wrapper (see Ma
 so Tailwind Typography's `prose-code:*` styles won't leak into `pre > code`.
 */
 
-html[data-theme='light'] {
-    --md-code-bg: #f8fafc; /* slate-50 */
-    --md-code-fg: #0f172a; /* slate-900 */
-    --md-code-border: rgba(148, 163, 184, 0.55); /* slate-400 */
-    --md-code-shadow: 0 1px 2px rgba(15, 23, 42, 0.08);
+html[data-theme="light"] {
+    --md-code-bg: #fafbfc;
+    --md-code-fg: #0f172a;
+    --md-code-border: rgba(148, 163, 184, 0.4);
+    --md-code-shadow: 0 2px 8px -2px rgba(0, 0, 0, 0.08), 0 4px 16px -4px rgba(0, 0, 0, 0.06);
 
-    --md-code-header-bg: rgba(241, 245, 249, 0.85); /* slate-100 */
-    --md-code-header-fg: rgba(51, 65, 85, 0.95); /* slate-700 */
-    --md-code-header-border: rgba(148, 163, 184, 0.45);
+    --md-code-header-bg: linear-gradient(to bottom, rgba(248, 250, 252, 0.95), rgba(241, 245, 249, 0.9));
+    --md-code-header-fg: rgba(51, 65, 85, 0.95);
+    --md-code-header-border: rgba(148, 163, 184, 0.3);
 
-    --md-inline-code-bg: #f1f5f9; /* slate-100 */
-    --md-inline-code-fg: #be185d; /* pink-700 */
-    --md-inline-code-border: rgba(148, 163, 184, 0.55);
+    --md-inline-code-bg: rgba(16, 185, 129, 0.08);
+    --md-inline-code-fg: #047857; /* emerald-700 */
+    --md-inline-code-border: rgba(16, 185, 129, 0.2);
 
     --hljs-fg: #0f172a;
-    --hljs-comment: #64748b; /* slate-500 */
-    --hljs-keyword: #c026d3; /* fuchsia-600 */
-    --hljs-string: #0f766e; /* teal-700 */
-    --hljs-number: #1d4ed8; /* blue-700 */
+    --hljs-comment: #64748b;
+    --hljs-keyword: #0891b2; /* cyan-600 */
+    --hljs-string: #047857; /* emerald-700 */
+    --hljs-number: #0284c7; /* sky-600 */
     --hljs-title: #7c3aed; /* violet-600 */
-    --hljs-variable: #b45309; /* amber-700 */
-    --hljs-type: #15803d; /* green-700 */
-    --hljs-meta: #475569; /* slate-600 */
-    --hljs-tag: #15803d; /* green-700 */
-    --hljs-deletion-bg: rgba(220, 38, 38, 0.10);
+    --hljs-variable: #d97706; /* amber-600 */
+    --hljs-type: #059669; /* emerald-600 */
+    --hljs-meta: #475569;
+    --hljs-tag: #059669;
+    --hljs-deletion-bg: rgba(220, 38, 38, 0.1);
     --hljs-deletion: #b91c1c;
-    --hljs-addition-bg: rgba(22, 163, 74, 0.12);
-    --hljs-addition: #15803d;
+    --hljs-addition-bg: rgba(16, 185, 129, 0.12);
+    --hljs-addition: #047857;
 }
 
-html[data-theme='dark'] {
-    --md-code-bg: #0b1220; /* deep slate */
-    --md-code-fg: #e2e8f0; /* slate-200 */
-    --md-code-border: rgba(51, 65, 85, 0.9); /* slate-700 */
-    --md-code-shadow: 0 10px 18px rgba(0, 0, 0, 0.35);
+html[data-theme="dark"] {
+    --md-code-bg: #0a0f1a;
+    --md-code-fg: #e8eef5;
+    --md-code-border: rgba(51, 65, 85, 0.6);
+    --md-code-shadow: 0 8px 24px -6px rgba(0, 0, 0, 0.4), 0 16px 48px -12px rgba(0, 0, 0, 0.35);
 
-    --md-code-header-bg: rgba(15, 23, 42, 0.85); /* slate-900 */
-    --md-code-header-fg: rgba(226, 232, 240, 0.92); /* slate-200 */
-    --md-code-header-border: rgba(51, 65, 85, 0.9);
+    --md-code-header-bg: linear-gradient(to bottom, rgba(15, 23, 42, 0.95), rgba(15, 23, 42, 0.9));
+    --md-code-header-fg: rgba(226, 232, 240, 0.92);
+    --md-code-header-border: rgba(51, 65, 85, 0.5);
 
-    --md-inline-code-bg: #0f172a; /* slate-900 */
-    --md-inline-code-fg: #fda4af; /* rose-300 */
-    --md-inline-code-border: rgba(51, 65, 85, 0.9);
+    --md-inline-code-bg: rgba(16, 185, 129, 0.1);
+    --md-inline-code-fg: #6ee7b7; /* emerald-300 */
+    --md-inline-code-border: rgba(16, 185, 129, 0.25);
 
-    /* GitHub Dark-ish palette (previous defaults) */
-    --hljs-fg: #c9d1d9;
-    --hljs-comment: #8b949e;
-    --hljs-keyword: #ff7b72;
-    --hljs-string: #a5d6ff;
-    --hljs-number: #79c0ff;
-    --hljs-title: #d2a8ff;
-    --hljs-variable: #ffa657;
-    --hljs-type: #7ee787;
-    --hljs-meta: #8b949e;
-    --hljs-tag: #7ee787;
+    --hljs-fg: #e8eef5;
+    --hljs-comment: #94a3b8;
+    --hljs-keyword: #22d3ee; /* cyan-400 */
+    --hljs-string: #6ee7b7; /* emerald-300 */
+    --hljs-number: #7dd3fc; /* sky-300 */
+    --hljs-title: #c4b5fd; /* violet-300 */
+    --hljs-variable: #fbbf24; /* amber-400 */
+    --hljs-type: #34d399; /* emerald-400 */
+    --hljs-meta: #94a3b8;
+    --hljs-tag: #34d399;
     --hljs-deletion-bg: rgba(248, 81, 73, 0.12);
-    --hljs-deletion: #ff7b72;
-    --hljs-addition-bg: rgba(46, 160, 67, 0.18);
-    --hljs-addition: #7ee787;
+    --hljs-deletion: #fca5a5;
+    --hljs-addition-bg: rgba(16, 185, 129, 0.18);
+    --hljs-addition: #6ee7b7;
 }
 
 .md-codeblock {
@@ -77,6 +76,23 @@ html[data-theme='dark'] {
     box-shadow: var(--md-code-shadow);
     border-radius: 0.875rem;
     overflow: hidden;
+    transition:
+        box-shadow 0.3s ease,
+        border-color 0.3s ease;
+}
+
+.md-codeblock-shell:hover {
+    box-shadow:
+        0 4px 12px -4px rgba(0, 0, 0, 0.12),
+        0 8px 24px -8px rgba(0, 0, 0, 0.1);
+    border-color: rgba(16, 185, 129, 0.3);
+}
+
+html[data-theme="dark"] .md-codeblock-shell:hover {
+    box-shadow:
+        0 12px 32px -8px rgba(0, 0, 0, 0.5),
+        0 24px 64px -16px rgba(0, 0, 0, 0.4);
+    border-color: rgba(16, 185, 129, 0.4);
 }
 
 .md-codeblock-header {
@@ -155,7 +171,7 @@ html[data-theme='dark'] {
     user-select: none;
 }
 
-html[data-theme='dark'] .md-copy-button {
+html[data-theme="dark"] .md-copy-button {
     background: rgba(2, 6, 23, 0.35);
 }
 
@@ -344,4 +360,14 @@ html[data-theme='dark'] .md-copy-button {
     @apply markdown-base markdown-headings markdown-paragraphs markdown-links
         markdown-strong markdown-lists
         markdown-blockquote markdown-hr;
+}
+
+/* Override Tailwind Typography's default inline code styles */
+.markdown-article :not(pre) > code::before,
+.markdown-article :not(pre) > code::after {
+    content: "" !important;
+}
+
+.markdown-article :not(pre) > code {
+    @apply bg-transparent border-0 p-0;
 }

@@ -1,8 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 
-type TerminalLine =
-    | { kind: "prompt"; prompt: string; command: string }
-    | { kind: "output"; text: string };
+type TerminalLine = { kind: "prompt"; prompt: string; command: string } | { kind: "output"; text: string };
 
 type TerminalContact = {
     email: string;
@@ -37,7 +35,7 @@ function typingDelayForChar(ch: string) {
         return base + 120 + Math.random() * 220;
     }
 
-    if (ch === "\"" || ch === "'") {
+    if (ch === '"' || ch === "'") {
         return base + 40 + Math.random() * 120;
     }
 
@@ -63,12 +61,10 @@ export function Terminal({
             { kind: "output", text: "{" },
             { kind: "output", text: `  "email": "${contact.email}",` },
             { kind: "output", text: `  "phone": "${contact.phone ?? "N/A"}",` },
-            ...(contact.wechat
-                ? ([{ kind: "output", text: `  "wechat": "${contact.wechat}",` }] as const)
-                : []),
+            ...(contact.wechat ? ([{ kind: "output", text: `  "wechat": "${contact.wechat}",` }] as const) : []),
             { kind: "output", text: `  "linkedin": "${contact.linkedin}",` },
             { kind: "output", text: "}" },
-            { kind: "prompt", prompt: "yyh@dev:~$", command: "echo \"Thanks for stopping by.\"" },
+            { kind: "prompt", prompt: "yyh@dev:~$", command: 'echo "Thanks for stopping by."' },
             { kind: "output", text: "Thanks for stopping by." },
         ],
         [contact, line2, name],
@@ -148,8 +144,7 @@ export function Terminal({
         const el = scrollViewportRef.current;
         if (!el) return;
         const prefersReducedMotion =
-            typeof window !== "undefined" &&
-            window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+            typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
         requestAnimationFrame(() => {
             el.scrollTo({
@@ -160,14 +155,25 @@ export function Terminal({
     }, [rendered, active]);
 
     return (
-        <div className="overflow-hidden rounded-2xl border border-slate-200/80 bg-slate-50/80 shadow-[0_0_0_1px_rgba(15,23,42,0.05),0_20px_50px_-38px_rgba(15,23,42,0.22)] backdrop-blur-sm dark:border-slate-800/70 dark:bg-slate-950/60 dark:shadow-[0_0_0_1px_rgba(15,23,42,0.15),0_30px_80px_-40px_rgba(0,0,0,0.8)]">
-            <div className="flex items-center gap-2 border-b border-slate-200/80 bg-slate-50/90 px-3 py-2.5 dark:border-slate-800/70 dark:bg-slate-950/70 sm:px-4 sm:py-3">
+        <div className="group overflow-hidden rounded-2xl border border-slate-200/60 bg-gradient-to-br from-slate-50 to-slate-100/50 shadow-soft backdrop-blur-sm transition-all duration-300 hover:shadow-soft-lg dark:border-slate-800/40 dark:from-slate-900/90 dark:to-slate-950/90">
+            <div className="flex items-center gap-2 border-b border-slate-200/60 bg-white/60 px-3 py-2.5 backdrop-blur-sm dark:border-slate-800/40 dark:bg-slate-900/50 sm:px-4 sm:py-3">
                 <div className="flex gap-2">
-                    <span className="h-2.5 w-2.5 rounded-full bg-rose-400/70" />
-                    <span className="h-2.5 w-2.5 rounded-full bg-amber-300/70" />
-                    <span className="h-2.5 w-2.5 rounded-full bg-emerald-400/70" />
+                    <span
+                        className="h-3 w-3 rounded-full bg-rose-400 shadow-[0_0_8px_rgba(251,113,133,0.4)] transition-shadow duration-300 group-hover:shadow-[0_0_12px_rgba(251,113,133,0.6)]"
+                        aria-label="Close"
+                    />
+                    <span
+                        className="h-3 w-3 rounded-full bg-amber-400 shadow-[0_0_8px_rgba(251,191,36,0.4)] transition-shadow duration-300 group-hover:shadow-[0_0_12px_rgba(251,191,36,0.6)]"
+                        aria-label="Minimize"
+                    />
+                    <span
+                        className="h-3 w-3 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.4)] transition-shadow duration-300 group-hover:shadow-[0_0_12px_rgba(52,211,153,0.6)]"
+                        aria-label="Maximize"
+                    />
                 </div>
-                <div className="ml-2 text-xs font-medium text-slate-500 dark:text-slate-300">{title}</div>
+                <div className="ml-2 text-xs font-semibold tracking-wide text-slate-600 dark:text-slate-300">
+                    {title}
+                </div>
             </div>
 
             <div
@@ -179,7 +185,7 @@ export function Terminal({
                         <span
                             className={
                                 line.includes("yyh@dev:~$")
-                                    ? "text-cyan-700 dark:text-cyan-300"
+                                    ? "font-semibold text-emerald-600 dark:text-emerald-400"
                                     : ""
                             }
                         >
@@ -190,14 +196,14 @@ export function Terminal({
 
                 {active ? (
                     <div className="whitespace-pre-wrap text-slate-800 dark:text-slate-200">
-                        <span className="text-cyan-700 dark:text-cyan-300">{active}</span>
+                        <span className="font-semibold text-emerald-600 dark:text-emerald-400">{active}</span>
                         <span className="terminal-cursor" aria-hidden="true">
                             _
                         </span>
                     </div>
                 ) : done ? (
                     <div className="whitespace-pre-wrap text-slate-800 dark:text-slate-200">
-                        <span className="text-cyan-700 dark:text-cyan-300">yyh@dev:~$ </span>
+                        <span className="font-semibold text-emerald-600 dark:text-emerald-400">yyh@dev:~$ </span>
                         <span className="terminal-cursor" aria-hidden="true">
                             _
                         </span>

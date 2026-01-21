@@ -28,27 +28,30 @@ export function ThemeToggle() {
             title={ariaLabel}
             aria-label={ariaLabel}
             onClick={cyclePreference}
-            className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200/80 bg-white/55 text-slate-700 shadow-sm transition-[background-color,border-color,box-shadow,transform] duration-200 hover:bg-white/80 hover:shadow dark:border-slate-800/70 dark:bg-slate-950/35 dark:text-slate-200 dark:hover:bg-slate-950/55 active:scale-[0.97]"
+            className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200/70 bg-white/70 text-slate-700 shadow-sm backdrop-blur-sm transition-all duration-200 hover:scale-105 hover:border-slate-300 hover:bg-white hover:shadow-md active:scale-95 dark:border-slate-700/60 dark:bg-slate-900/70 dark:text-slate-200 dark:hover:border-slate-600 dark:hover:bg-slate-900"
         >
             <span className="relative inline-block h-4 w-4">
                 <span
                     className={`absolute inset-0 flex items-center justify-center text-slate-700 transition-opacity duration-200 ease-out dark:text-slate-200 ${iconState(
                         preference === "system",
                     )}`}
+                    aria-hidden={preference !== "system"}
                 >
                     <FontAwesomeIcon icon={faCircleHalfStroke} />
                 </span>
                 <span
-                    className={`absolute inset-0 flex items-center justify-center text-amber-600 transition-opacity duration-200 ease-out dark:text-amber-300 ${iconState(
+                    className={`absolute inset-0 flex items-center justify-center text-amber-500 transition-opacity duration-200 ease-out dark:text-amber-400 ${iconState(
                         preference === "light",
                     )}`}
+                    aria-hidden={preference !== "light"}
                 >
                     <FontAwesomeIcon icon={faSun} />
                 </span>
                 <span
-                    className={`absolute inset-0 flex items-center justify-center text-slate-700 transition-opacity duration-200 ease-out dark:text-slate-200 ${iconState(
+                    className={`absolute inset-0 flex items-center justify-center text-indigo-600 transition-opacity duration-200 ease-out dark:text-indigo-400 ${iconState(
                         preference === "dark",
                     )}`}
+                    aria-hidden={preference !== "dark"}
                 >
                     <FontAwesomeIcon icon={faMoon} />
                 </span>

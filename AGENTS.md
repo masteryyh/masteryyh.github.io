@@ -14,12 +14,16 @@ January 2026
 
 ## Abstract
 
-Comprehensive performance optimization guide for React and Next.js applications, designed for AI agents and LLMs. Contains 40+ rules across 8 categories, prioritized by impact from critical (eliminating waterfalls, reducing bundle size) to incremental (advanced patterns). Each rule includes detailed explanations, real-world examples comparing incorrect vs. correct implementations, and specific impact metrics to guide automated refactoring and code generation.
+Comprehensive performance optimization guide for React applications, designed for AI agents and LLMs. Contains 40+ rules across 8 categories, prioritized by impact from critical (eliminating waterfalls, reducing bundle size) to incremental (advanced patterns). Each rule includes detailed explanations, real-world examples comparing incorrect vs. correct implementations, and specific impact metrics to guide automated refactoring and code generation.
 
 ---
 # First of all
 
-ALWAYS USE context7 to fetch latest documents about libraries and tools you might need to use.
+**CRITICAL**: Unless being told to, never write any documents and too much commentary in the code. Focus on delivering the final product.
+
+**CRITICAL**: Always use context7 to fetch latest documents about libraries, frameworks, or tools to ensure up-to-date and accurate implementations.
+
+**CRITICAL**: Before planning anything, always read and analyze the entire project, including all sources, blog posts, documentations, AGENTS.md, and other useful skills.
 
 ## Table of Contents
 

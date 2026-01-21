@@ -126,14 +126,25 @@ export function HomePage() {
             />
 
             <div className="mx-auto w-full max-w-6xl px-4 py-10 sm:px-5 sm:py-12">
-                <header className="flex flex-col gap-7">
-                    <div className="flex flex-col gap-3">
-                        <div className="flex flex-wrap items-center justify-between gap-3">
-                            <div className="flex flex-wrap items-baseline gap-x-3 gap-y-2">
-                                <h1 className="break-words text-2xl font-semibold tracking-tight text-slate-900 dark:text-slate-50 sm:text-3xl">
+                <header className="flex flex-col gap-8">
+                    <div className="flex flex-col gap-4">
+                        <div className="flex flex-wrap items-center justify-between gap-4">
+                            <div className="flex flex-col gap-2">
+                                <h1 className="break-words bg-gradient-to-br from-slate-900 to-slate-700 bg-clip-text text-3xl font-bold tracking-tight text-transparent dark:from-slate-50 dark:to-slate-300 sm:text-4xl">
                                     {PROFILE.name}
                                 </h1>
-                                <span className="font-mono text-sm text-slate-500 dark:text-slate-400">@masteryyh</span>
+                                <div className="flex items-center gap-2">
+                                    <span className="font-mono text-sm text-slate-500 dark:text-slate-400">
+                                        @masteryyh
+                                    </span>
+                                    <span
+                                        className="h-1 w-1 rounded-full bg-slate-400 dark:bg-slate-600"
+                                        aria-hidden="true"
+                                    />
+                                    <span className="text-xs text-slate-500 dark:text-slate-400">
+                                        Backend / Fullstack / DevOps
+                                    </span>
+                                </div>
                             </div>
 
                             {!scrolled ? (
@@ -155,7 +166,7 @@ export function HomePage() {
                             ) : null}
                         </div>
 
-                        <p className="text-balance text-sm leading-relaxed text-slate-600 dark:text-slate-300 sm:text-base">
+                        <p className="max-w-2xl text-balance text-sm leading-relaxed text-slate-600 dark:text-slate-300 sm:text-base">
                             {t("header.tagline")}
                         </p>
                     </div>

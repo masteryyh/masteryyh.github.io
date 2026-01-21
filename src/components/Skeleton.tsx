@@ -9,7 +9,7 @@ interface SkeletonProps {
 export function Skeleton({ className = "", variant = "text", width, height, animation = "pulse" }: SkeletonProps) {
     const animationClass = animation === "pulse" ? "animate-pulse" : animation === "wave" ? "animate-shimmer" : "";
 
-    const variantClass = variant === "circular" ? "rounded-full" : variant === "rectangular" ? "rounded-md" : "rounded";
+    const variantClass = variant === "circular" ? "rounded-full" : variant === "rectangular" ? "rounded-lg" : "rounded";
 
     const style: React.CSSProperties = {
         width: width ? (typeof width === "number" ? `${width}px` : width) : undefined,
@@ -18,8 +18,11 @@ export function Skeleton({ className = "", variant = "text", width, height, anim
 
     return (
         <div
-            className={`bg-slate-200 dark:bg-slate-700 ${variantClass} ${animationClass} ${className}`}
-            style={style}
+            className={`bg-gradient-to-r from-slate-200 via-slate-300/50 to-slate-200 dark:from-slate-700 dark:via-slate-600/50 dark:to-slate-700 ${variantClass} ${animationClass} ${className}`}
+            style={{
+                ...style,
+                backgroundSize: animation === "wave" ? "200% 100%" : undefined,
+            }}
             role="status"
             aria-label="Loading"
         />
@@ -28,14 +31,18 @@ export function Skeleton({ className = "", variant = "text", width, height, anim
 
 export function BlogCardSkeleton() {
     return (
-        <div className="rounded-lg border border-slate-200 dark:border-slate-700 p-6 space-y-4">
-            <Skeleton height={24} width="80%" />
-            <Skeleton height={16} width="100%" />
-            <Skeleton height={16} width="100%" />
-            <Skeleton height={16} width="60%" />
-            <div className="flex gap-2 pt-2">
-                <Skeleton height={20} width={60} variant="rectangular" />
-                <Skeleton height={20} width={60} variant="rectangular" />
+        <div className="group rounded-xl border border-slate-200/60 bg-white p-5 shadow-soft dark:border-slate-800/40 dark:bg-slate-900/90 sm:p-6">
+            <div className="space-y-4">
+                <Skeleton height={24} width="80%" animation="wave" />
+                <div className="space-y-2">
+                    <Skeleton height={16} width="100%" animation="wave" />
+                    <Skeleton height={16} width="95%" animation="wave" />
+                </div>
+                <div className="flex gap-3 pt-2">
+                    <Skeleton height={20} width={80} variant="rectangular" animation="wave" />
+                    <Skeleton height={20} width={70} variant="rectangular" animation="wave" />
+                    <Skeleton height={20} width={90} variant="rectangular" animation="wave" />
+                </div>
             </div>
         </div>
     );
@@ -43,35 +50,31 @@ export function BlogCardSkeleton() {
 
 export function BlogPostSkeleton() {
     return (
-        <div className="max-w-3xl mx-auto px-4 py-8 space-y-6">
+        <div className="mx-auto max-w-3xl space-y-8 px-4 py-8">
             {/* Title */}
-            <Skeleton height={40} width="90%" />
+            <div className="space-y-3">
+                <Skeleton height={44} width="90%" animation="wave" />
+                <Skeleton height={44} width="70%" animation="wave" />
+            </div>
 
             {/* Metadata */}
             <div className="flex gap-4">
-                <Skeleton height={16} width={100} />
-                <Skeleton height={16} width={80} />
+                <Skeleton height={18} width={100} animation="wave" />
+                <Skeleton height={18} width={80} animation="wave" />
+                <Skeleton height={18} width={120} animation="wave" />
             </div>
 
-            {/* Content paragraphs */}
-            <div className="space-y-3 pt-4">
-                <Skeleton height={16} width="100%" />
-                <Skeleton height={16} width="100%" />
-                <Skeleton height={16} width="95%" />
-                <Skeleton height={16} width="100%" />
-                <Skeleton height={16} width="85%" />
-            </div>
-
-            <div className="space-y-3 pt-6">
-                <Skeleton height={16} width="100%" />
-                <Skeleton height={16} width="100%" />
-                <Skeleton height={16} width="90%" />
-            </div>
-
-            <div className="space-y-3 pt-6">
-                <Skeleton height={16} width="100%" />
-                <Skeleton height={16} width="100%" />
-                <Skeleton height={16} width="80%" />
+            {/* Content blocks */}
+            <div className="space-y-4 pt-4">
+                {[...Array(3)].map((_, i) => (
+                    <div key={i} className="space-y-3">
+                        <Skeleton height={18} width="100%" animation="wave" />
+                        <Skeleton height={18} width="100%" animation="wave" />
+                        <Skeleton height={18} width="95%" animation="wave" />
+                        <Skeleton height={18} width="100%" animation="wave" />
+                        <Skeleton height={18} width="85%" animation="wave" />
+                    </div>
+                ))}
             </div>
         </div>
     );
