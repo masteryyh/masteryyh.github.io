@@ -1,54 +1,29 @@
-import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import type { BlogPost } from "../types";
-import { loadHighlightedPosts } from "../loader";
+import { useBlogHighlights } from "../loader";
 import { BlogCard } from "./BlogCard";
 import { Section } from "../../components/Section";
 
 export function BlogSection() {
     const { t, i18n } = useTranslation();
-    const [posts, setPosts] = useState<BlogPost[]>([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState<Error | null>(null);
-
-    useEffect(() => {
-        const lang = i18n.language === "zh-CN" ? "zh-CN" : "en";
-
-        void (async () => {
-            try {
-                setLoading(true);
-                setError(null);
-                const highlightedPosts = await loadHighlightedPosts(lang, 3);
-                setPosts(highlightedPosts);
-            } catch (e) {
-                console.error("Failed to load blog posts:", e);
-                setError(e instanceof Error ? e : new Error(String(e)));
-            } finally {
-                setLoading(false);
-            }
-        })();
-    }, [i18n.language]);
+    const lang = i18n.language === "zh-CN" ? "zh-CN" : "en";
+    const { posts, loading, error } = useBlogHighlights(lang, 3);
 
     return (
         <Section title={t("blog.title")}>
             {loading ? (
                 <div className="grid gap-5 sm:gap-6 md:grid-cols-2 lg:grid-cols-3">
-                    {[1, 2, 3].map((i) => (
-                        <div
-                            key={i}
-                            className="h-40 animate-pulse rounded-lg bg-slate-200 dark:bg-slate-800"
-                        />
+                    {[...Array(3)].map((_, i) => (
+                        <div key={i} className="h-40 animate-pulse rounded-lg border border-border bg-surface" />
                     ))}
                 </div>
             ) : error ? (
-                <div className="rounded-lg border border-red-200 bg-red-50 p-5 text-sm text-red-700 dark:border-red-900 dark:bg-red-950 dark:text-red-300">
-                    <div className="font-semibold">{t("blog.errorLoading")}</div>
-                    <div className="mt-1 text-xs opacity-90">{error.message}</div>
+                <div className="rounded-lg border border-warn bg-warn-muted p-6 text-center font-mono text-sm text-warn">
+                    {"// "}{error}
                 </div>
             ) : posts.length === 0 ? (
-                <div className="rounded-lg border border-slate-200 bg-white p-8 text-center text-sm text-slate-600 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-400">
-                    {t("blog.noPosts")}
+                <div className="rounded-lg border border-border bg-surface p-8 text-center font-mono text-sm text-text-muted">
+                    {"// "}{t("blog.noPosts")}
                 </div>
             ) : (
                 <>
@@ -61,7 +36,7 @@ export function BlogSection() {
                     <div className="mt-6 text-center">
                         <Link
                             to="/blogs"
-                            className="inline-flex items-center gap-2 rounded-lg border border-blue-600 bg-blue-600 px-6 py-2.5 text-sm font-medium text-white transition-all hover:border-blue-700 hover:bg-blue-700 dark:border-blue-500 dark:bg-blue-500 dark:hover:border-blue-600 dark:hover:bg-blue-600"
+                            className="inline-flex items-center gap-2 rounded border border-accent px-6 py-2.5 font-mono text-sm font-medium text-accent transition-colors duration-200 hover:bg-accent-muted"
                         >
                             {t("blog.viewAll")}
                             <span>→</span>

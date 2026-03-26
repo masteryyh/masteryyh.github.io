@@ -104,6 +104,13 @@ export async function loadI18nLanguage(lang: Lang): Promise<void> {
     }
 }
 
+export function isLanguageLoaded(lang: Lang): boolean {
+    return loadedLangs.has(lang);
+}
+
+// Eagerly preload initial language translations in parallel with lazy chunks
+void loadI18nLanguage(initialLang).catch((e) => console.error("[i18n] eager preload failed:", e));
+
 export { LANG_LABEL, SUPPORTED_LANGS, type Lang };
 export { getInitialLang, isLang } from "./i18n/i18n.config";
 

@@ -1,10 +1,11 @@
 import { useCallback, useEffect, useState } from "react";
-import { loadI18nLanguage } from "../i18n";
+import { loadI18nLanguage, isLanguageLoaded } from "../i18n";
 import type { Lang } from "../i18n";
 
 export function useI18nLoader(currentLanguage: string) {
+    const lang = currentLanguage as Lang;
     const [i18nError, setI18nError] = useState<Error | null>(null);
-    const [i18nReady, setI18nReady] = useState(false);
+    const [i18nReady, setI18nReady] = useState(() => isLanguageLoaded(lang));
     const [retryCount, setRetryCount] = useState(0);
 
     const handleRetry = useCallback(() => {
@@ -14,11 +15,17 @@ export function useI18nLoader(currentLanguage: string) {
     }, []);
 
     useEffect(() => {
+        if (isLanguageLoaded(lang)) {
+            setI18nReady(true);
+            return;
+        }
+
+        setI18nReady(false);
         let cancelled = false;
 
         void (async () => {
             try {
-                await loadI18nLanguage(currentLanguage as Lang);
+                await loadI18nLanguage(lang);
                 if (!cancelled) {
                     setI18nReady(true);
                 }
@@ -33,7 +40,7 @@ export function useI18nLoader(currentLanguage: string) {
         return () => {
             cancelled = true;
         };
-    }, [retryCount, currentLanguage]);
+    }, [retryCount, lang]);
 
     return { i18nError, i18nReady, handleRetry };
 }

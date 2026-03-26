@@ -79,6 +79,16 @@ export function SEO({ title, description, image, type = "website", author, publi
                 document.querySelectorAll('meta[property^="article:"]').forEach((el) => el.remove());
                 removeStructuredData("blog-post-schema");
             }
+            // Remove OG and Twitter meta to prevent stale data after SPA navigation
+            for (const prop of ["og:url", "og:type", "og:title", "og:description", "og:image"]) {
+                document.querySelector(`meta[property="${prop}"]`)?.remove();
+            }
+            for (const name of ["twitter:card", "twitter:title", "twitter:description", "twitter:image"]) {
+                document.querySelector(`meta[name="${name}"]`)?.remove();
+            }
+            if (description) {
+                document.querySelector('meta[name="description"]')?.remove();
+            }
         };
     }, [title, description, image, type, author, publishedTime, tags, currentUrl]);
 

@@ -5,6 +5,7 @@ export type AuthState = {
     user: GitHubUser | null;
     isReady: boolean;
     isAuthenticating: boolean;
+    error: string | null;
     login: () => void;
     logout: () => void;
     handleCallback: (code: string, state: string, options?: { signal?: AbortSignal }) => Promise<void>;

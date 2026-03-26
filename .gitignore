@@ -26,4 +26,6 @@ dist-ssr
 
 .env
 public/blogs
+public/assets/blogs
 blogs/index.json
+HANDOFF.md

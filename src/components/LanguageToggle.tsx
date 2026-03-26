@@ -8,20 +8,22 @@ type LanguageToggleProps = {
     disabled?: boolean;
 };
 
-const segmentedContainerClassName =
-    "inline-flex h-9 items-center rounded-lg border border-slate-200/70 bg-white/70 p-0.5 shadow-sm backdrop-blur-sm ring-1 ring-transparent dark:border-slate-700/60 dark:bg-slate-900/70";
-
 function segmentButtonClass(active: boolean) {
-    return `rounded-md px-2.5 py-1 text-xs font-semibold transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400/50 focus-visible:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-60 dark:focus-visible:ring-emerald-500/40 ${
+    return `rounded px-2.5 py-1 font-mono text-xs font-medium transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/50 focus-visible:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-60 ${
         active
-            ? "bg-gradient-to-br from-slate-900 to-slate-800 text-white shadow-md ring-1 ring-slate-900/20 dark:from-slate-100 dark:to-slate-200 dark:text-slate-900 dark:ring-slate-100/20"
-            : "text-slate-600 hover:bg-slate-100/50 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-slate-800/50 dark:hover:text-slate-100"
+            ? "bg-text-primary text-[var(--color-bg)]"
+            : "text-text-muted hover:text-text-primary"
     }`;
 }
 
 export function LanguageToggle({ value, onChange, ariaLabel = "Language", disabled }: LanguageToggleProps) {
     return (
-        <div className={segmentedContainerClassName} role="radiogroup" aria-label={ariaLabel} aria-disabled={disabled}>
+        <div
+            className="inline-flex h-8 items-center rounded border border-border bg-surface p-0.5"
+            role="radiogroup"
+            aria-label={ariaLabel}
+            aria-disabled={disabled}
+        >
             {SUPPORTED_LANGS.map((l) => {
                 const active = l === value;
                 return (

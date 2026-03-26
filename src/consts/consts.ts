@@ -69,3 +69,8 @@ export const TECH_STACKS: TechStack = {
 };
 
 export const PROJECT_URL = "https://github.com/masteryyh/masteryyh.github.io";
+
+export const RESUME_FILES: Record<string, string> = {
+    "en": "yanhongyang_backend_agent.pdf",
+    "zh-CN": "杨雁鸿_后端_agent.pdf",
+};

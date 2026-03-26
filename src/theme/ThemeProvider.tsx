@@ -20,7 +20,7 @@ function applyResolvedTheme(theme: ResolvedTheme) {
 
     const meta = document.querySelector("meta[name=\"theme-color\"]") as HTMLMetaElement | null;
     if (meta) {
-        meta.content = theme === "dark" ? "#020617" : "#f8fafc";
+        meta.content = theme === "dark" ? "#002b36" : "#fdf6e3";
     }
 }
 
@@ -30,9 +30,8 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
         return isThemePreference(stored) ? stored : "system";
     });
 
-    const resolvedTheme: ResolvedTheme = useMemo(() => {
-        return preference === "system" ? getSystemTheme() : preference;
-    }, [preference]);
+    const [systemTheme, setSystemTheme] = useState<ResolvedTheme>(getSystemTheme);
+    const resolvedTheme: ResolvedTheme = preference === "system" ? systemTheme : preference;
 
     useEffect(() => {
         localStorage.setItem(THEME_STORAGE_KEY, preference);
@@ -48,16 +47,14 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
 
         const mql = window.matchMedia("(prefers-color-scheme: dark)");
         const onChange = () => {
-            applyResolvedTheme(mql.matches ? "dark" : "light");
+            setSystemTheme(mql.matches ? "dark" : "light");
         };
 
-        // Safari compatibility
         if (typeof mql.addEventListener === "function") {
             mql.addEventListener("change", onChange);
             return () => mql.removeEventListener("change", onChange);
         }
-
-        // Legacy API
+        // Fallback for Safari < 14
         mql.addListener(onChange);
         return () => mql.removeListener(onChange);
     }, [preference]);

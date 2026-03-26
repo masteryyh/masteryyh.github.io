@@ -8,63 +8,65 @@ so Tailwind Typography's `prose-code:*` styles won't leak into `pre > code`.
 */
 
 html[data-theme="light"] {
-    --md-code-bg: #fafbfc;
-    --md-code-fg: #0f172a;
-    --md-code-border: rgba(148, 163, 184, 0.4);
-    --md-code-shadow: 0 2px 8px -2px rgba(0, 0, 0, 0.08), 0 4px 16px -4px rgba(0, 0, 0, 0.06);
+    --md-code-bg: #eee8d5;
+    --md-code-fg: #073642;
+    --md-code-border: var(--border);
+    --md-code-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.08);
 
-    --md-code-header-bg: linear-gradient(to bottom, rgba(248, 250, 252, 0.95), rgba(241, 245, 249, 0.9));
-    --md-code-header-fg: rgba(51, 65, 85, 0.95);
-    --md-code-header-border: rgba(148, 163, 184, 0.3);
+    --md-code-header-bg: #e8e1cd;
+    --md-code-header-fg: #93a1a1;
+    --md-code-header-border: var(--border);
 
-    --md-inline-code-bg: rgba(16, 185, 129, 0.08);
-    --md-inline-code-fg: #047857; /* emerald-700 */
-    --md-inline-code-border: rgba(16, 185, 129, 0.2);
+    --md-inline-code-bg: var(--accent-muted);
+    --md-inline-code-fg: var(--accent);
+    --md-inline-code-border: transparent;
 
-    --hljs-fg: #0f172a;
-    --hljs-comment: #64748b;
-    --hljs-keyword: #0891b2; /* cyan-600 */
-    --hljs-string: #047857; /* emerald-700 */
-    --hljs-number: #0284c7; /* sky-600 */
-    --hljs-title: #7c3aed; /* violet-600 */
-    --hljs-variable: #d97706; /* amber-600 */
-    --hljs-type: #059669; /* emerald-600 */
-    --hljs-meta: #475569;
-    --hljs-tag: #059669;
-    --hljs-deletion-bg: rgba(220, 38, 38, 0.1);
-    --hljs-deletion: #b91c1c;
-    --hljs-addition-bg: rgba(16, 185, 129, 0.12);
-    --hljs-addition: #047857;
+    /* Solarized Light syntax */
+    --hljs-fg: #073642;
+    --hljs-comment: #93a1a1;
+    --hljs-keyword: #859900;
+    --hljs-string: #2aa198;
+    --hljs-number: #d33682;
+    --hljs-title: #268bd2;
+    --hljs-variable: #b58900;
+    --hljs-type: #6c71c4;
+    --hljs-meta: #586e75;
+    --hljs-tag: #268bd2;
+    --hljs-deletion-bg: rgba(220, 50, 47, 0.1);
+    --hljs-deletion: #dc322f;
+    --hljs-addition-bg: rgba(133, 153, 0, 0.1);
+    --hljs-addition: #859900;
 }
 
 html[data-theme="dark"] {
-    --md-code-bg: #0a0f1a;
-    --md-code-fg: #e8eef5;
-    --md-code-border: rgba(51, 65, 85, 0.6);
-    --md-code-shadow: 0 8px 24px -6px rgba(0, 0, 0, 0.4), 0 16px 48px -12px rgba(0, 0, 0, 0.35);
+    --md-code-bg: #073642;
+    --md-code-fg: #839496;
+    --md-code-border: var(--border);
+    --md-code-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.3);
 
-    --md-code-header-bg: linear-gradient(to bottom, rgba(15, 23, 42, 0.95), rgba(15, 23, 42, 0.9));
-    --md-code-header-fg: rgba(226, 232, 240, 0.92);
-    --md-code-header-border: rgba(51, 65, 85, 0.5);
+    --md-code-header-bg: #0d404e;
+    --md-code-header-fg: #657b83;
+    --md-code-header-border: var(--border);
 
-    --md-inline-code-bg: rgba(16, 185, 129, 0.1);
-    --md-inline-code-fg: #6ee7b7; /* emerald-300 */
-    --md-inline-code-border: rgba(16, 185, 129, 0.25);
+    --md-inline-code-bg: #073642;
+    --md-inline-code-fg: var(--color-accent-hover);
+    --md-inline-code-border: rgba(181, 137, 0, 0.25);
 
-    --hljs-fg: #e8eef5;
-    --hljs-comment: #94a3b8;
-    --hljs-keyword: #22d3ee; /* cyan-400 */
-    --hljs-string: #6ee7b7; /* emerald-300 */
-    --hljs-number: #7dd3fc; /* sky-300 */
-    --hljs-title: #c4b5fd; /* violet-300 */
-    --hljs-variable: #fbbf24; /* amber-400 */
-    --hljs-type: #34d399; /* emerald-400 */
-    --hljs-meta: #94a3b8;
-    --hljs-tag: #34d399;
-    --hljs-deletion-bg: rgba(248, 81, 73, 0.12);
-    --hljs-deletion: #fca5a5;
-    --hljs-addition-bg: rgba(16, 185, 129, 0.18);
-    --hljs-addition: #6ee7b7;
+    /* Solarized Dark syntax */
+    --hljs-fg: #839496;
+    --hljs-comment: #586e75;
+    --hljs-keyword: #859900;
+    --hljs-string: #2aa198;
+    --hljs-number: #d33682;
+    --hljs-title: #268bd2;
+    --hljs-variable: #b58900;
+    --hljs-type: #6c71c4;
+    --hljs-meta: #657b83;
+    --hljs-tag: #2aa198;
+    --hljs-deletion-bg: rgba(220, 50, 47, 0.15);
+    --hljs-deletion: #dc322f;
+    --hljs-addition-bg: rgba(133, 153, 0, 0.15);
+    --hljs-addition: #859900;
 }
 
 .md-codeblock {
@@ -74,25 +76,12 @@ html[data-theme="dark"] {
 .md-codeblock-shell {
     border: 1px solid var(--md-code-border);
     box-shadow: var(--md-code-shadow);
-    border-radius: 0.875rem;
+    border-radius: 0.5rem;
     overflow: hidden;
-    transition:
-        box-shadow 0.3s ease,
-        border-color 0.3s ease;
 }
 
 .md-codeblock-shell:hover {
-    box-shadow:
-        0 4px 12px -4px rgba(0, 0, 0, 0.12),
-        0 8px 24px -8px rgba(0, 0, 0, 0.1);
-    border-color: rgba(16, 185, 129, 0.3);
-}
-
-html[data-theme="dark"] .md-codeblock-shell:hover {
-    box-shadow:
-        0 12px 32px -8px rgba(0, 0, 0, 0.5),
-        0 24px 64px -16px rgba(0, 0, 0, 0.4);
-    border-color: rgba(16, 185, 129, 0.4);
+    border-color: var(--border-hover);
 }
 
 .md-codeblock-header {
@@ -103,7 +92,6 @@ html[data-theme="dark"] .md-codeblock-shell:hover {
     background: var(--md-code-header-bg);
     color: var(--md-code-header-fg);
     border-bottom: 1px solid var(--md-code-header-border);
-    backdrop-filter: saturate(140%) blur(8px);
 }
 
 .md-codeblock-traffic {
@@ -114,10 +102,9 @@ html[data-theme="dark"] .md-codeblock-shell:hover {
 }
 
 .md-dot {
-    width: 0.75rem;
-    height: 0.75rem;
+    width: 0.625rem;
+    height: 0.625rem;
     border-radius: 9999px;
-    box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.18);
 }
 
 .md-dot-close {
@@ -137,10 +124,9 @@ html[data-theme="dark"] .md-codeblock-shell:hover {
     min-width: 0;
     text-align: center;
     font-size: 0.75rem;
-    font-weight: 600;
-    letter-spacing: 0.02em;
-    text-transform: uppercase;
-    opacity: 0.95;
+    font-weight: 500;
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    letter-spacing: 0.01em;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -155,28 +141,27 @@ html[data-theme="dark"] .md-codeblock-shell:hover {
 
 .md-codeblock-copied {
     font-size: 0.75rem;
-    font-weight: 600;
-    opacity: 0.85;
+    font-weight: 500;
+    font-family: "JetBrains Mono", ui-monospace, monospace;
 }
 
 .md-copy-button {
     font-size: 0.75rem;
-    font-weight: 600;
-    padding: 0.25rem 0.55rem;
-    border-radius: 0.5rem;
+    font-weight: 500;
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    padding: 0.2rem 0.5rem;
+    border-radius: 0.25rem;
     border: 1px solid var(--md-code-header-border);
-    background: rgba(255, 255, 255, 0.28);
+    background: transparent;
     color: inherit;
     cursor: pointer;
     user-select: none;
-}
-
-html[data-theme="dark"] .md-copy-button {
-    background: rgba(2, 6, 23, 0.35);
+    transition: border-color 0.15s ease;
 }
 
 .md-copy-button:hover {
-    filter: brightness(1.02);
+    border-color: var(--accent);
+    color: var(--accent);
 }
 
 .md-copy-button:active {
@@ -201,18 +186,18 @@ html[data-theme="dark"] .md-copy-button {
     line-height: 1.6;
 }
 
-.md-inline-code {
+.markdown-article .md-inline-code {
     background: var(--md-inline-code-bg);
     color: var(--md-inline-code-fg);
     border: 1px solid var(--md-inline-code-border);
     padding: 0.125rem 0.375rem;
-    border-radius: 0.375rem;
-    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-    font-size: 0.875rem;
+    border-radius: 0.25rem;
+    font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    font-size: 0.85em;
 }
 
-.md-inline-code::before,
-.md-inline-code::after {
+.markdown-article .md-inline-code::before,
+.markdown-article .md-inline-code::after {
     content: none;
 }
 
@@ -221,34 +206,29 @@ html[data-theme="dark"] .md-copy-button {
     color: var(--hljs-fg);
 }
 
-/* Comments */
 .hljs-comment,
 .hljs-quote {
     color: var(--hljs-comment);
     font-style: italic;
 }
 
-/* Keywords */
 .hljs-keyword,
 .hljs-selector-tag,
 .hljs-subst {
     color: var(--hljs-keyword);
 }
 
-/* Strings */
 .hljs-string,
 .hljs-doctag,
 .hljs-regexp {
     color: var(--hljs-string);
 }
 
-/* Numbers */
 .hljs-number,
 .hljs-literal {
     color: var(--hljs-number);
 }
 
-/* Functions */
 .hljs-title,
 .hljs-section,
 .hljs-built_in,
@@ -256,37 +236,31 @@ html[data-theme="dark"] .md-copy-button {
     color: var(--hljs-title);
 }
 
-/* Variables */
 .hljs-variable,
 .hljs-template-variable,
 .hljs-attr {
     color: var(--hljs-variable);
 }
 
-/* Types */
 .hljs-type,
 .hljs-class .hljs-title {
     color: var(--hljs-type);
 }
 
-/* Operators */
 .hljs-operator,
 .hljs-symbol,
 .hljs-bullet {
     color: var(--hljs-keyword);
 }
 
-/* Meta */
 .hljs-meta {
     color: var(--hljs-meta);
 }
 
-/* Tags */
 .hljs-tag {
     color: var(--hljs-tag);
 }
 
-/* Emphasis */
 .hljs-emphasis {
     font-style: italic;
 }
@@ -295,7 +269,6 @@ html[data-theme="dark"] .md-copy-button {
     font-weight: bold;
 }
 
-/* Deletions and additions (for diffs) */
 .hljs-deletion {
     background: var(--hljs-deletion-bg);
     color: var(--hljs-deletion);
@@ -306,68 +279,81 @@ html[data-theme="dark"] .md-copy-button {
     color: var(--hljs-addition);
 }
 
-/* Markdown article styles - base and theme */
+/* Markdown article styles using design system colors */
 .markdown-base {
-    @apply prose prose-slate dark:prose-invert max-w-none;
+    @apply prose max-w-none;
+    color: var(--text-secondary);
 }
 
-/* Headings styles */
+.markdown-headings h1,
+.markdown-headings h2,
+.markdown-headings h3,
+.markdown-headings h4,
+.markdown-headings h5,
+.markdown-headings h6 {
+    color: var(--text-primary);
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-weight: 600;
+}
+
 .markdown-headings {
-    @apply prose-headings:font-semibold prose-headings:text-slate-900
-        dark:prose-headings:text-slate-100 prose-h1:text-3xl prose-h1:mb-4
+    @apply prose-h1:text-3xl prose-h1:mb-4
         prose-h2:text-2xl prose-h2:mt-8 prose-h2:mb-3 prose-h3:text-xl;
 }
 
-/* Paragraph styles */
-.markdown-paragraphs {
-    @apply prose-p:text-slate-700 dark:prose-p:text-slate-300 prose-p:leading-relaxed;
+.markdown-paragraphs p {
+    color: var(--text-secondary);
+    line-height: 1.75;
 }
 
-/* Link styles */
-.markdown-links {
-    @apply prose-a:text-blue-600 dark:prose-a:text-blue-400 prose-a:no-underline
-        hover:prose-a:underline;
+.markdown-links a {
+    color: var(--info);
+    text-decoration: none;
 }
 
-/* Strong/bold styles */
-.markdown-strong {
-    @apply prose-strong:text-slate-900 dark:prose-strong:text-slate-100 prose-strong:font-semibold;
+.markdown-links a:hover {
+    text-decoration: underline;
+}
+
+.markdown-strong strong {
+    color: var(--text-primary);
+    font-weight: 600;
 }
 
 /* Inline code + fenced code blocks are styled via .md-inline-code / .md-pre, not via prose-code/prose-pre. */
 
-/* Lists styles */
-.markdown-lists {
-    @apply prose-ul:list-disc prose-ul:text-slate-700 dark:prose-ul:text-slate-300
-        prose-ol:list-decimal prose-ol:text-slate-700 dark:prose-ol:text-slate-300
-        prose-li:marker:text-slate-500 dark:prose-li:marker:text-slate-400;
+.markdown-lists ul {
+    list-style-type: disc;
+    color: var(--text-secondary);
 }
 
-/* Blockquote styles */
-.markdown-blockquote {
-    @apply prose-blockquote:border-l-blue-600 dark:prose-blockquote:border-l-blue-400
-        prose-blockquote:bg-slate-50 dark:prose-blockquote:bg-slate-800/50
-        prose-blockquote:text-slate-700 dark:prose-blockquote:text-slate-300;
+.markdown-lists ol {
+    list-style-type: decimal;
+    color: var(--text-secondary);
 }
 
-/* Horizontal rule styles */
-.markdown-hr {
-    @apply prose-hr:border-slate-200 dark:prose-hr:border-slate-800;
+.markdown-lists li::marker {
+    color: var(--text-muted);
 }
 
-/* Combined article class */
+.markdown-blockquote blockquote {
+    border-left-color: var(--accent);
+    background: var(--accent-muted);
+    color: var(--text-secondary);
+}
+
+.markdown-hr hr {
+    border-color: var(--border);
+}
+
 .markdown-article {
     @apply markdown-base markdown-headings markdown-paragraphs markdown-links
         markdown-strong markdown-lists
         markdown-blockquote markdown-hr;
 }
 
-/* Override Tailwind Typography's default inline code styles */
+/* Override Tailwind Typography's default inline code backtick decorations */
 .markdown-article :not(pre) > code::before,
 .markdown-article :not(pre) > code::after {
     content: "" !important;
-}
-
-.markdown-article :not(pre) > code {
-    @apply bg-transparent border-0 p-0;
 }

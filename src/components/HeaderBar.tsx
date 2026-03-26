@@ -39,9 +39,6 @@ export function HeaderBar({
         lastPathRef.current = activePath;
     }, [activePath]);
 
-    const languageButtonClassName =
-        "inline-flex h-9 items-center justify-center rounded-full border border-slate-200/70 bg-white/70 px-3 text-xs font-semibold text-slate-700 shadow-sm backdrop-blur-sm transition-all duration-200 hover:bg-white hover:border-slate-300 hover:shadow-md active:scale-95 dark:border-slate-700/60 dark:bg-slate-900/70 dark:text-slate-200 dark:hover:bg-slate-900 dark:hover:border-slate-600";
-
     const nextLang = (() => {
         const idx = SUPPORTED_LANGS.indexOf(lang);
         if (idx < 0) return SUPPORTED_LANGS[0];
@@ -50,16 +47,16 @@ export function HeaderBar({
 
     return (
         <div
-            className={`fixed left-0 right-0 top-0 z-40 w-full border-b transition-all duration-300 ease-out ${
+            className={`fixed left-0 right-0 top-0 z-40 w-full border-b transition-[transform,opacity,background-color,border-color] duration-200 ${
                 scrolled
-                    ? "pointer-events-auto translate-y-0 border-slate-200/60 bg-white/80 opacity-100 shadow-sm backdrop-blur-lg dark:border-slate-800/50 dark:bg-slate-900/80"
-                    : "pointer-events-none -translate-y-2 border-transparent bg-transparent opacity-0 backdrop-blur-0"
+                    ? "pointer-events-auto translate-y-0 border-border bg-elevated opacity-100"
+                    : "pointer-events-none -translate-y-2 border-transparent bg-transparent opacity-0"
             }`}
         >
             <div className="mx-auto w-full max-w-6xl px-3 py-2.5 sm:px-4 sm:py-3">
                 <div className="flex w-full items-center justify-between gap-3">
                     <div className="min-w-0 flex items-center gap-3">
-                        <span className="min-w-0 max-w-[50vw] truncate font-mono text-xs text-slate-600 dark:text-slate-300 sm:max-w-none">
+                        <span className="min-w-0 max-w-[50vw] truncate font-mono text-xs text-text-secondary sm:max-w-none">
                             {isAnimating ? (
                                 <span className="relative inline-grid">
                                     <span key={`out-${transitionId}`} className="col-start-1 row-start-1 path-fade-out">
@@ -85,7 +82,7 @@ export function HeaderBar({
                     </div>
 
                     <div className="flex items-center gap-2">
-                        <SocialButtons className="hidden sm:flex" linkedInUrl={linkedInUrl} />
+                        <SocialButtons className="hidden sm:flex" linkedInUrl={linkedInUrl} lang={lang} />
 
                         <ThemeToggle />
 
@@ -95,7 +92,7 @@ export function HeaderBar({
 
                         <button
                             type="button"
-                            className={`sm:hidden ${languageButtonClassName}`}
+                            className="inline-flex h-8 items-center justify-center rounded border border-border bg-surface px-2.5 font-mono text-xs font-medium text-text-secondary transition-colors duration-200 hover:border-border-hover hover:text-text-primary sm:hidden"
                             disabled={langDisabled}
                             aria-label={`Switch language to ${LANG_LABEL[nextLang]}`}
                             title={`Switch to ${LANG_LABEL[nextLang]}`}

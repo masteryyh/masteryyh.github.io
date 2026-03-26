@@ -1,5 +1,6 @@
 import ReactMarkdown from "react-markdown";
 import type { Components } from "react-markdown";
+import type { ComponentProps } from "react";
 import { isValidElement, useEffect, useMemo, useState, type ReactNode } from "react";
 import remarkGfm from "remark-gfm";
 import remarkFrontmatter from "remark-frontmatter";
@@ -137,31 +138,36 @@ const markdownComponents: Components = {
     },
 };
 
+type PluggableList = NonNullable<ComponentProps<typeof ReactMarkdown>["rehypePlugins"]>;
+
+const remarkPluginList = [remarkGfm, remarkFrontmatter];
+
+const rehypePluginList: PluggableList = [
+    [
+        rehypeHighlight,
+        {
+            subset: false,
+            ignoreMissing: true,
+        },
+    ],
+    rehypeSlug,
+    [
+        rehypeAutolinkHeadings,
+        {
+            behavior: "wrap",
+            properties: {
+                className: ["anchor"],
+            },
+        },
+    ],
+];
+
 export function MarkdownRenderer({ content }: MarkdownRendererProps) {
     return (
         <article className="markdown-article">
             <ReactMarkdown
-                remarkPlugins={[remarkGfm, remarkFrontmatter]}
-                rehypePlugins={[
-                    [
-                        rehypeHighlight,
-                        {
-                            // Only highlight code blocks, not inline code
-                            subset: false,
-                            ignoreMissing: true,
-                        },
-                    ],
-                    rehypeSlug,
-                    [
-                        rehypeAutolinkHeadings,
-                        {
-                            behavior: "wrap",
-                            properties: {
-                                className: ["anchor"],
-                            },
-                        },
-                    ],
-                ]}
+                remarkPlugins={remarkPluginList}
+                rehypePlugins={rehypePluginList}
                 components={markdownComponents}
             >
                 {content}

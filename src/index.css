@@ -1,29 +1,64 @@
-@import url("https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap");
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-    /* Allow the browser to render built-in UI appropriately; we set the exact scheme via JS on <html>. */
-    color-scheme: light dark;
     font-synthesis: none;
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-
-    /* Custom color variables */
-    --color-primary: 10 185 129;
-    --color-accent: 34 211 238;
-    --color-warn: 251 191 36;
 }
 
 html[data-theme="light"] {
     color-scheme: light;
+
+    /* Solarized Light */
+    --color-bg: #fdf6e3;
+    --color-surface: #eee8d5;
+    --color-elevated: #e8e1cd;
+    --color-border: #d3cabb;
+    --color-border-hover: #93a1a1;
+    --color-text-primary: #073642;
+    --color-text-secondary: #586e75;
+    --color-text-muted: #93a1a1;
+    --color-accent: #b58900;
+    --color-accent-hover: #9a7400;
+    --color-accent-muted: rgba(181, 137, 0, 0.12);
+    --color-info: #268bd2;
+    --color-info-hover: #1e7ab8;
+    --color-info-muted: rgba(38, 139, 210, 0.1);
+    --color-success: #859900;
+    --color-success-muted: rgba(133, 153, 0, 0.1);
+    --color-warn: #cb4b16;
+    --color-warn-muted: rgba(203, 75, 22, 0.1);
+
+    --dot-color: rgba(88, 110, 117, 0.12);
 }
 
 html[data-theme="dark"] {
     color-scheme: dark;
+
+    /* Solarized Dark */
+    --color-bg: #002b36;
+    --color-surface: #073642;
+    --color-elevated: #0d404e;
+    --color-border: #1d4e5c;
+    --color-border-hover: #2d6b7a;
+    --color-text-primary: #fdf6e3;
+    --color-text-secondary: #93a1a1;
+    --color-text-muted: #657b83;
+    --color-accent: #b58900;
+    --color-accent-hover: #d4a400;
+    --color-accent-muted: rgba(181, 137, 0, 0.15);
+    --color-info: #268bd2;
+    --color-info-hover: #4faae3;
+    --color-info-muted: rgba(38, 139, 210, 0.12);
+    --color-success: #859900;
+    --color-success-muted: rgba(133, 153, 0, 0.15);
+    --color-warn: #cb4b16;
+    --color-warn-muted: rgba(203, 75, 22, 0.15);
+
+    --dot-color: rgba(147, 161, 161, 0.05);
 }
 
 html,
@@ -33,8 +68,8 @@ body {
 
 body {
     margin: 0;
-    background: #fafbfc;
-    color: #0f172a;
+    background: var(--color-bg);
+    color: var(--color-text-primary);
     font-family:
         "Instrument Sans",
         -apple-system,
@@ -43,44 +78,12 @@ body {
         sans-serif;
 }
 
-html[data-theme="dark"] body {
-    background: #0a0f1a;
-    color: #e8eef5;
-}
-
-/* Subtle animated background with elegant gradients */
-.bg-grid {
+.bg-dots {
     position: fixed;
     inset: 0;
     pointer-events: none;
-    background-image:
-        radial-gradient(ellipse at 25% 15%, rgba(16, 185, 129, 0.08), transparent 55%),
-        radial-gradient(ellipse at 75% 40%, rgba(34, 211, 238, 0.06), transparent 60%),
-        radial-gradient(ellipse at 50% 85%, rgba(168, 85, 247, 0.04), transparent 65%);
-    background-size: auto;
-    background-position: 0 0;
-    filter: saturate(120%);
-    opacity: 1;
-    animation: bgFloat 18s ease-in-out infinite;
-}
-
-html[data-theme="dark"] .bg-grid {
-    background-image:
-        radial-gradient(circle at 20% 10%, rgba(16, 185, 129, 0.2), transparent 45%),
-        radial-gradient(circle at 80% 35%, rgba(34, 211, 238, 0.14), transparent 55%),
-        radial-gradient(circle at 45% 85%, rgba(251, 191, 36, 0.12), transparent 55%);
-}
-
-@keyframes bgFloat {
-    0% {
-        transform: translate3d(0, 0, 0);
-    }
-    50% {
-        transform: translate3d(0, -10px, 0);
-    }
-    100% {
-        transform: translate3d(0, 0, 0);
-    }
+    background-image: radial-gradient(circle, var(--dot-color) 1px, transparent 1px);
+    background-size: 24px 24px;
 }
 
 .text-balance {
@@ -91,13 +94,9 @@ html[data-theme="dark"] .bg-grid {
     display: inline-block;
     width: 1ch;
     margin-left: 0.05ch;
-    color: rgba(14, 116, 144, 0.95);
+    color: var(--color-accent);
     line-height: 1;
     animation: blink 1s steps(1, end) infinite;
-}
-
-html[data-theme="dark"] .terminal-cursor {
-    color: rgba(34, 211, 238, 0.95);
 }
 
 @keyframes blink {
@@ -127,7 +126,7 @@ html[data-theme="dark"] .terminal-cursor {
 @keyframes fadeInUp {
     from {
         opacity: 0;
-        transform: translateY(20px);
+        transform: translateY(12px);
     }
     to {
         opacity: 1;
@@ -144,7 +143,7 @@ html[data-theme="dark"] .terminal-cursor {
 }
 
 .animate-fade-in-up {
-    animation: fadeInUp 0.5s ease-out both;
+    animation: fadeInUp 0.4s ease-out both;
 }
 
 @media (prefers-reduced-motion: reduce) {
