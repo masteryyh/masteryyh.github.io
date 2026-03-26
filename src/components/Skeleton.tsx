@@ -1,14 +1,15 @@
+import { memo } from "react";
+
 interface SkeletonProps {
     className?: string;
     variant?: "text" | "circular" | "rectangular";
     width?: string | number;
     height?: string | number;
-    animation?: "pulse" | "wave" | "none";
+    animation?: "pulse" | "none";
 }
 
-export function Skeleton({ className = "", variant = "text", width, height, animation = "pulse" }: SkeletonProps) {
-    const animationClass = animation === "pulse" ? "animate-pulse" : animation === "wave" ? "animate-shimmer" : "";
-
+export const Skeleton = memo(function Skeleton({ className = "", variant = "text", width, height, animation = "pulse" }: SkeletonProps) {
+    const animationClass = animation === "pulse" ? "animate-pulse" : "";
     const variantClass = variant === "circular" ? "rounded-full" : variant === "rectangular" ? "rounded-lg" : "rounded";
 
     const style: React.CSSProperties = {
@@ -18,69 +19,63 @@ export function Skeleton({ className = "", variant = "text", width, height, anim
 
     return (
         <div
-            className={`bg-gradient-to-r from-slate-200 via-slate-300/50 to-slate-200 dark:from-slate-700 dark:via-slate-600/50 dark:to-slate-700 ${variantClass} ${animationClass} ${className}`}
-            style={{
-                ...style,
-                backgroundSize: animation === "wave" ? "200% 100%" : undefined,
-            }}
+            className={`bg-border ${variantClass} ${animationClass} ${className}`}
+            style={style}
             role="status"
             aria-label="Loading"
         />
     );
-}
+});
 
-export function BlogCardSkeleton() {
+export const BlogCardSkeleton = memo(function BlogCardSkeleton() {
     return (
-        <div className="group rounded-xl border border-slate-200/60 bg-white p-5 shadow-soft dark:border-slate-800/40 dark:bg-slate-900/90 sm:p-6">
+        <div className="rounded-lg border border-border bg-surface p-5 shadow-card sm:p-6">
             <div className="space-y-4">
-                <Skeleton height={24} width="80%" animation="wave" />
+                <Skeleton height={24} width="80%" />
                 <div className="space-y-2">
-                    <Skeleton height={16} width="100%" animation="wave" />
-                    <Skeleton height={16} width="95%" animation="wave" />
+                    <Skeleton height={16} width="100%" />
+                    <Skeleton height={16} width="95%" />
                 </div>
                 <div className="flex gap-3 pt-2">
-                    <Skeleton height={20} width={80} variant="rectangular" animation="wave" />
-                    <Skeleton height={20} width={70} variant="rectangular" animation="wave" />
-                    <Skeleton height={20} width={90} variant="rectangular" animation="wave" />
+                    <Skeleton height={20} width={80} variant="rectangular" />
+                    <Skeleton height={20} width={70} variant="rectangular" />
+                    <Skeleton height={20} width={90} variant="rectangular" />
                 </div>
             </div>
         </div>
     );
-}
+});
 
-export function BlogPostSkeleton() {
+export const BlogPostSkeleton = memo(function BlogPostSkeleton() {
     return (
         <div className="mx-auto max-w-3xl space-y-8 px-4 py-8">
-            {/* Title */}
             <div className="space-y-3">
-                <Skeleton height={44} width="90%" animation="wave" />
-                <Skeleton height={44} width="70%" animation="wave" />
+                <Skeleton height={44} width="90%" />
+                <Skeleton height={44} width="70%" />
             </div>
 
-            {/* Metadata */}
             <div className="flex gap-4">
-                <Skeleton height={18} width={100} animation="wave" />
-                <Skeleton height={18} width={80} animation="wave" />
-                <Skeleton height={18} width={120} animation="wave" />
+                <Skeleton height={18} width={100} />
+                <Skeleton height={18} width={80} />
+                <Skeleton height={18} width={120} />
             </div>
 
-            {/* Content blocks */}
             <div className="space-y-4 pt-4">
                 {[...Array(3)].map((_, i) => (
                     <div key={i} className="space-y-3">
-                        <Skeleton height={18} width="100%" animation="wave" />
-                        <Skeleton height={18} width="100%" animation="wave" />
-                        <Skeleton height={18} width="95%" animation="wave" />
-                        <Skeleton height={18} width="100%" animation="wave" />
-                        <Skeleton height={18} width="85%" animation="wave" />
+                        <Skeleton height={18} width="100%" />
+                        <Skeleton height={18} width="100%" />
+                        <Skeleton height={18} width="95%" />
+                        <Skeleton height={18} width="100%" />
+                        <Skeleton height={18} width="85%" />
                     </div>
                 ))}
             </div>
         </div>
     );
-}
+});
 
-export function HeaderSkeleton() {
+export const HeaderSkeleton = memo(function HeaderSkeleton() {
     return (
         <div className="flex items-center justify-between p-4">
             <Skeleton height={32} width={150} />
@@ -90,4 +85,4 @@ export function HeaderSkeleton() {
             </div>
         </div>
     );
-}
+});

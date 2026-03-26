@@ -67,21 +67,21 @@ export function GitHubCallbackPage() {
     }, [blockingMessage, code, state, handleCallback, navigate]);
 
     return (
-        <div className="min-h-dvh relative">
-            <div className="bg-grid" />
+        <div className="min-h-dvh relative" style={{ background: "var(--color-bg)" }}>
+            <div className="bg-dots" />
             <div className="absolute inset-0 flex items-center justify-center">
                 <div className="mx-4 flex max-w-md flex-col items-center gap-4 text-center">
                     <div
-                        className="h-10 w-10 animate-spin rounded-full border-2 border-slate-400 border-t-transparent dark:border-slate-500 dark:border-t-transparent"
+                        className="h-8 w-8 animate-spin rounded-full border-2 border-border border-t-accent"
                         aria-hidden="true"
                     />
-                    <p className="text-sm text-slate-700 dark:text-slate-200">{blockingMessage || message}</p>
+                    <p className="font-mono text-sm text-text-secondary">{blockingMessage || message}</p>
                     <button
                         type="button"
-                        className="rounded-md border border-slate-200 bg-white/70 px-4 py-2 text-sm font-medium text-slate-700 shadow-sm hover:bg-white/90 dark:border-slate-800/70 dark:bg-slate-950/35 dark:text-slate-200 dark:hover:bg-slate-950/55"
+                        className="rounded border border-accent px-4 py-2 font-mono text-sm text-accent transition-colors duration-200 hover:bg-accent-muted"
                         onClick={() => navigate("/", { replace: true })}
                     >
-                        Back to home
+                        ← back to home
                     </button>
                 </div>
             </div>

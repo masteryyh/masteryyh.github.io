@@ -8,7 +8,7 @@
         "devOps": "DevOps"
     },
     "header": {
-        "tagline": "Backend / Fullstack / DevOps engineer"
+        "tagline": "Backend / AI Agent / DevOps engineer"
     },
     "actions": {
         "open": "Open"
@@ -50,7 +50,7 @@
         "builtWith": "Built using Vite + React with ❤️"
     },
     "terminal": {
-        "line2": "Backend / Fullstack / DevOps"
+        "line2": "Backend / AI Agent / DevOps"
     },
     "auth": {
         "github": {

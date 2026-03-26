@@ -31,20 +31,19 @@ async function generateSitemap() {
 
     // Read blog posts from index.json
     try {
-        const indexPath = path.join(publicDir, "blogs", "index.json");
+        const indexPath = path.join(publicDir, "assets", "blogs", "index.json");
         const indexContent = await fs.readFile(indexPath, "utf-8");
         const index = JSON.parse(indexContent);
 
-        if (index.posts && Array.isArray(index.posts)) {
-            for (const post of index.posts) {
-                if (post.published !== false) {
-                    urls.push({
-                        loc: `${baseUrl}/blogs/${post.id}`,
-                        lastmod: post.date || new Date().toISOString().split("T")[0],
-                        changefreq: "monthly",
-                        priority: 0.8,
-                    });
-                }
+        if (Array.isArray(index)) {
+            for (const entry of index) {
+                const firstLang = Object.values(entry.langs || {})[0];
+                urls.push({
+                    loc: `${baseUrl}/blogs/${entry.id}`,
+                    lastmod: (firstLang && firstLang.date) ? firstLang.date.split("T")[0] : new Date().toISOString().split("T")[0],
+                    changefreq: "monthly",
+                    priority: 0.8,
+                });
             }
         }
     } catch (error) {

@@ -17,6 +17,7 @@ export function GitHubAuthProvider({ children }: { children: ReactNode }) {
     const [user, setUser] = useState<GitHubUser | null>(null);
     const [isReady, setIsReady] = useState(false);
     const [isAuthenticating, setIsAuthenticating] = useState(false);
+    const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
         const token = loadStoredToken();
@@ -41,22 +42,29 @@ export function GitHubAuthProvider({ children }: { children: ReactNode }) {
             return;
         }
 
+        const controller = new AbortController();
+
         void (async () => {
             try {
-                const u = await fetchGitHubUser(token.accessToken);
+                const u = await fetchGitHubUser(token.accessToken, { signal: controller.signal });
                 saveStoredUser(u);
                 setUser(u);
             } catch (e) {
+                if (controller.signal.aborted) return;
                 console.warn("Failed to fetch GitHub user; clearing stored token", e);
+                setError("Failed to fetch GitHub user");
                 clearGitHubAuthStorage();
                 setUser(null);
             } finally {
-                setIsReady(true);
+                if (!controller.signal.aborted) setIsReady(true);
             }
         })();
+
+        return () => controller.abort();
     }, []);
 
     const login = useCallback(() => {
+        setError(null);
         startGitHubLogin();
     }, []);
 
@@ -66,6 +74,7 @@ export function GitHubAuthProvider({ children }: { children: ReactNode }) {
     }, []);
 
     const handleCallback = useCallback(async (code: string, state: string, options?: { signal?: AbortSignal }) => {
+        setError(null);
         setIsAuthenticating(true);
         try {
             const tokenRes = await tokenExchange({ code, state, signal: options?.signal });
@@ -85,6 +94,9 @@ export function GitHubAuthProvider({ children }: { children: ReactNode }) {
             const u = await fetchGitHubUser(tokenData.access_token, { signal: options?.signal });
             saveStoredUser(u);
             setUser(u);
+        } catch (e) {
+            setError(e instanceof Error ? e.message : "Authentication failed");
+            throw e;
         } finally {
             setIsAuthenticating(false);
         }
@@ -95,11 +107,12 @@ export function GitHubAuthProvider({ children }: { children: ReactNode }) {
             user,
             isReady,
             isAuthenticating,
+            error,
             login,
             logout,
             handleCallback,
         }),
-        [user, isReady, isAuthenticating, login, logout, handleCallback],
+        [user, isReady, isAuthenticating, error, login, logout, handleCallback],
     );
 
     return <GitHubAuthContext.Provider value={value}>{children}</GitHubAuthContext.Provider>;

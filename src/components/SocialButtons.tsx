@@ -1,16 +1,23 @@
+import { memo } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGithub, faLinkedinIn } from "@fortawesome/free-brands-svg-icons";
 import { faDownload } from "@fortawesome/free-solid-svg-icons";
-import { PROJECT_URL } from "../consts/consts";
+import { PROJECT_URL, RESUME_FILES } from "../consts/consts";
+
+const BASE = import.meta.env.BASE_URL.replace(/\/+$/, "");
 
 type SocialButtonsProps = {
     linkedInUrl: string;
     className: string;
+    lang?: string;
 };
 
-export function SocialButtons({ linkedInUrl, className }: SocialButtonsProps) {
-    const iconButtonClassName =
-        "inline-flex h-10 w-10 items-center justify-center rounded-full bg-slate-100/80 text-lg text-slate-700 backdrop-blur-sm transition-all duration-200 hover:scale-110 hover:bg-slate-200 hover:text-slate-900 hover:shadow-md dark:bg-slate-800/60 dark:text-slate-300 dark:hover:bg-slate-700/80 dark:hover:text-slate-100 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400/50 focus-visible:ring-offset-2 dark:focus-visible:ring-emerald-500/40";
+const iconButtonClassName =
+    "inline-flex h-8 w-8 items-center justify-center rounded border border-border bg-surface text-text-secondary transition-colors duration-200 hover:border-border-hover hover:text-text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/50 focus-visible:ring-offset-1";
+
+export const SocialButtons = memo(function SocialButtons({ linkedInUrl, className, lang }: SocialButtonsProps) {
+    const resumeFile = lang ? (RESUME_FILES[lang] ?? RESUME_FILES["en"]) : null;
+    const resumeUrl = resumeFile ? `${BASE}/assets/resume/${resumeFile}` : null;
 
     return (
         <div className={`items-center gap-2 ${className}`}>
@@ -36,15 +43,27 @@ export function SocialButtons({ linkedInUrl, className }: SocialButtonsProps) {
                 <FontAwesomeIcon icon={faLinkedinIn} />
             </a>
 
-            <button
-                type="button"
-                disabled
-                className={`${iconButtonClassName} cursor-not-allowed opacity-40 hover:scale-100 hover:bg-slate-100/80 hover:text-slate-700 dark:hover:bg-slate-800/60 dark:hover:text-slate-300`}
-                aria-label="Download resume (coming soon)"
-                title="Resume (coming soon)"
-            >
-                <FontAwesomeIcon icon={faDownload} />
-            </button>
+            {resumeUrl ? (
+                <a
+                    href={resumeUrl}
+                    download={resumeFile}
+                    className={iconButtonClassName}
+                    aria-label="Download resume"
+                    title="Download Resume"
+                >
+                    <FontAwesomeIcon icon={faDownload} />
+                </a>
+            ) : (
+                <button
+                    type="button"
+                    disabled
+                    className={`${iconButtonClassName} cursor-not-allowed opacity-40`}
+                    aria-label="Download resume (coming soon)"
+                    title="Resume (coming soon)"
+                >
+                    <FontAwesomeIcon icon={faDownload} />
+                </button>
+            )}
         </div>
     );
-}
+});

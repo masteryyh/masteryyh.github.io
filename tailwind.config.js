@@ -1,7 +1,5 @@
 /** @type {import("tailwindcss").Config} */
 export default {
-    // Use a custom selector so `dark:` variants follow our generic `data-theme` mechanism.
-    // (Tailwind docs: darkMode: ['selector', '[data-mode="dark"]'])
     darkMode: ["selector", '[data-theme="dark"]'],
     content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
     theme: {
@@ -11,17 +9,27 @@ export default {
                 mono: ["JetBrains Mono", "Menlo", "Monaco", "Courier New", "monospace"],
             },
             colors: {
-                primary: "rgb(var(--color-primary) / <alpha-value>)",
-                accent: "rgb(var(--color-accent) / <alpha-value>)",
-                warn: "rgb(var(--color-warn) / <alpha-value>)",
-            },
-            animation: {
-                shimmer: "shimmer 2s linear infinite",
-                float: "float 3s ease-in-out infinite",
+                surface: "var(--color-surface)",
+                elevated: "var(--color-elevated)",
+                border: "var(--color-border)",
+                "border-hover": "var(--color-border-hover)",
+                "text-primary": "var(--color-text-primary)",
+                "text-secondary": "var(--color-text-secondary)",
+                "text-muted": "var(--color-text-muted)",
+                accent: "var(--color-accent)",
+                "accent-hover": "var(--color-accent-hover)",
+                "accent-muted": "var(--color-accent-muted)",
+                info: "var(--color-info)",
+                "info-hover": "var(--color-info-hover)",
+                "info-muted": "var(--color-info-muted)",
+                success: "var(--color-success)",
+                "success-muted": "var(--color-success-muted)",
+                warn: "var(--color-warn)",
+                "warn-muted": "var(--color-warn-muted)",
             },
             boxShadow: {
-                soft: "0 2px 8px -2px rgba(0, 0, 0, 0.1), 0 4px 16px -4px rgba(0, 0, 0, 0.08)",
-                "soft-lg": "0 8px 24px -6px rgba(0, 0, 0, 0.12), 0 16px 48px -12px rgba(0, 0, 0, 0.1)",
+                card: "0 1px 3px 0 rgba(0, 0, 0, 0.06)",
+                "card-hover": "0 2px 8px -2px rgba(0, 0, 0, 0.1)",
             },
         },
     },
